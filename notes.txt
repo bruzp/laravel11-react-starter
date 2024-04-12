@@ -39,3 +39,18 @@ Answers
 - created_at
 - updated_at
 - deleted_at
+
+-----------------
+
+Next Step:
+- Create seeders for the ff.
+    - users
+    - admin
+    - questionnaire
+    - questions
+    - answers
+- Admin Authentication
+- Admin Dashboard
+    - Questionnaire/Question Panel
+    - Answers Panel
+    - Users Panel
