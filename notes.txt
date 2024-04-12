@@ -1,0 +1,41 @@
+TO DO: Quiz App
+
+DB Tables
+
+Admin
+- id
+- name
+- created_at
+- updated_at
+- deleted_at
+
+Questionnaire
+- id
+- admin_id
+- title
+- description
+- created_at
+- updated_at
+- deleted_at
+
+Questions
+- id
+- questionnaire_id
+- question
+- choices
+- answer
+- priority
+- created_at
+- updated_at
+- deleted_at
+
+Answers
+- id
+- questionnaire_id
+- user_id
+- answers
+- result
+- questionnaire_data
+- created_at
+- updated_at
+- deleted_at
