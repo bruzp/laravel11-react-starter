@@ -1,44 +1,7 @@
-TO DO: Quiz App
+TO DO: Quiz App Roadmap
+-----------------
 
-DB Tables
-
-Admin
-- id
-- name
-- created_at
-- updated_at
-- deleted_at
-
-Questionnaire
-- id
-- admin_id
-- title
-- description
-- created_at
-- updated_at
-- deleted_at
-
-Questions
-- id
-- questionnaire_id
-- question
-- choices
-- answer
-- priority
-- created_at
-- updated_at
-- deleted_at
-
-Answers
-- id
-- questionnaire_id
-- user_id
-- answers
-- result
-- questionnaire_data
-- created_at
-- updated_at
-- deleted_at
+- Create DB Tables
 
 -----------------
 
@@ -51,9 +14,24 @@ Answers
 
 -----------------
 
-Next Step:
-- Admin Authentication
 - Admin Dashboard
+    - Admin Authentication: ***NEXT STEP***
+    - Dashboard Home Info
     - Questionnaire/Question Panel
-    - Answers Panel
+    - User Answers Panel
     - Users Panel
+
+-----------------
+
+- Frontend
+    - Menus Exam
+    - Front home page leader board
+    - Answer questions
+
+-----------------
+
+- Testing
+
+-----------------
+
+- Documentation
