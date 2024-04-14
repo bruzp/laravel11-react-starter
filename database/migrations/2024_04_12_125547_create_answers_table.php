@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('questionnaire_id');
             $table->bigInteger('user_id');
-            $table->string('answers');
+            $table->text('answers');
             $table->integer('result');
-            $table->text('questionnaire_data');
+            $table->longText('questionnaire_data');
             $table->timestamps();
             $table->softDeletes();
 

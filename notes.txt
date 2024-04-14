@@ -42,13 +42,16 @@ Answers
 
 -----------------
 
-Next Step:
 - Create seeders for the ff.
     - users
     - admin
     - questionnaire
     - questions
     - answers
+
+-----------------
+
+Next Step:
 - Admin Authentication
 - Admin Dashboard
     - Questionnaire/Question Panel
