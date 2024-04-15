@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use Inertia\Inertia;
+use App\Models\Admin;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Route;
-use App\Http\Requests\User\Auth\LoginRequest;
+use App\Http\Requests\Admin\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -18,8 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('User/Auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
+        return Inertia::render('Admin/Auth/Login', [
             'status' => session('status'),
         ]);
     }
@@ -33,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('admin.dashboard.index', absolute: false));
     }
 
     /**
@@ -41,13 +40,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard(Admin::GUARD)->logout();
 
         // Invalidate only the session associated with the specified guard
-        $request->session()->forget(Auth::guard('web')->getName());
+        $request->session()->forget(Auth::guard(Admin::GUARD)->getName());
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('admin.login');
     }
 }
