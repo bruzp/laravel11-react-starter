@@ -15,11 +15,11 @@ TO DO: Quiz App Roadmap
 -----------------
 
 - Admin Dashboard
-    - Admin Authentication: ***NEXT STEP***
-    - Dashboard Home Info
+    - Admin Authentication
+    - Users Panel: ***NEXT STEP***
     - Questionnaire/Question Panel
     - User Answers Panel
-    - Users Panel
+    - Dashboard Home Info
 
 -----------------
 
