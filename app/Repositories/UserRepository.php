@@ -3,12 +3,13 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use App\Interfaces\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Interfaces\User\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getUsers(int $paginate = 0, ...$conditions): Collection
+    public function getUsers(int $paginate = 0, ...$conditions): Collection|LengthAwarePaginator
     {
         $query = User::query();
 
