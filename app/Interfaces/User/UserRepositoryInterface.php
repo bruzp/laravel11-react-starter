@@ -6,7 +6,7 @@ use App\Models\User;
 
 interface UserRepositoryInterface
 {
-    public function getUsers(int $paginate, ...$conditions);
+    public function getUsers(int $paginate, array $conditions = []);
 
     public function findUserById(int $id);
 

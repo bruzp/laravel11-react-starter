@@ -10,6 +10,7 @@ use Inertia\Response as InertiaResponse;
 use App\Interfaces\User\UserRepositoryInterface;
 use App\Http\Requests\Admin\Users\StoreUserRequest;
 use App\Http\Requests\Admin\Users\UpdateUserRequest;
+use App\Http\Requests\Admin\Users\SearchUsersRequest;
 
 class UsersController extends Controller
 {
@@ -17,11 +18,12 @@ class UsersController extends Controller
     {
     }
 
-    public function index(): InertiaResponse
+    public function index(SearchUsersRequest $request): InertiaResponse
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => $this->userRepository->getUsers(30),
+            'users' => $this->userRepository->getUsers(30, $request->validated()),
             'status' => session('status'),
+            'search' => $request->safe()->search,
         ]);
     }
 

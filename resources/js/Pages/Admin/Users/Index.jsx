@@ -1,9 +1,18 @@
 import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import { format } from "date-fns";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 
-export default function Dashboard({ auth, users, status }) {
+export default function Dashboard({ auth, users, status, search }) {
+    const { data, setData, get } = useForm({
+        search: search,
+        order_by: 'updated_at',
+        order: 'desc',
+    });
+
     function destroy(id, name) {
         router.delete(route("admin.users.destroy", id), {
             onBefore: () =>
@@ -11,6 +20,24 @@ export default function Dashboard({ auth, users, status }) {
                     "Are you sure you want to delete this user {" + name + "}?"
                 ),
         });
+    }
+
+    function handleOnChange(event) {
+        setData(
+            event.target.name,
+            event.target.type === "checkbox"
+                ? event.target.checked
+                : event.target.value
+        );
+
+        if (event.target.name == "name") {
+            setName(event.target.value);
+        }
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        get(route("admin.users.index"));
     }
 
     return (
@@ -35,9 +62,28 @@ export default function Dashboard({ auth, users, status }) {
                                 Create New User
                             </Link>
                         </div>
+
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             Users Table
                         </div>
+
+                        <div className="pl-6 pb-6 col-span-3">
+                            <InputLabel htmlFor="search" value="Search" />
+
+                            <TextInput
+                                id="search"
+                                type="text"
+                                name="search"
+                                value={data.search}
+                                className="mt-1"
+                                autoComplete="off"
+                                onChange={handleOnChange}
+                                onBlur={handleSubmit}
+                            />
+
+                            <InputError message="" className="mt-2" />
+                        </div>
+
                         <div className="flex flex-col">
                             <div className="overflow-x-auto">
                                 <div className="pl-5 pr-5 w-full inline-block align-middle">
