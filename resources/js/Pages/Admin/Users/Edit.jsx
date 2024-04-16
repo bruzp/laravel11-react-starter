@@ -73,7 +73,6 @@ export default function Dashboard({ auth, user, status }) {
 
                       <TextInput
                         id="name"
-                        type="text"
                         name="name"
                         value={data.name}
                         className="mt-1 block w-full"
