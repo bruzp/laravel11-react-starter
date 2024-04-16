@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import QuestionsList from "./Partials/Questions/QuestionsList";
 
 export default function Dashboard({ auth, questionnaire, status }) {
   const { data, setData, put, processing, errors } = useForm({
@@ -38,8 +39,8 @@ export default function Dashboard({ auth, questionnaire, status }) {
       <Head title="Admin Edit Questionnaire" />
 
       <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+          <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               Edit Questionnaire
             </div>
@@ -96,6 +97,10 @@ export default function Dashboard({ auth, questionnaire, status }) {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+            <QuestionsList className="max-w-xl" />
           </div>
         </div>
       </div>
