@@ -18,6 +18,8 @@ TO DO: Quiz App Roadmap
     - Admin Authentication
     - Users Panel
     - Questionnaire/Question Panel:***NEXT STEP***
+        - remove type="text" on TextInput Component
+        - remove id on users edit request
     - User Answers Panel
     - Dashboard Home Info
 

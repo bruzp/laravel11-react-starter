@@ -10,6 +10,17 @@ class Questionnaire extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'admin_id',
+        'title',
+        'description',
+    ];
+
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);

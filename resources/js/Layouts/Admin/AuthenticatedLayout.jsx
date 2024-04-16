@@ -38,6 +38,15 @@ export default function Authenticated({ admin, header, children }) {
                   Users
                 </NavLink>
               </div>
+
+              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <NavLink
+                  href={route("admin.questionnaires.index")}
+                  active={route().current("admin.questionnaires.index")}
+                >
+                  Questionnaires
+                </NavLink>
+              </div>
             </div>
 
             <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -130,6 +139,20 @@ export default function Authenticated({ admin, header, children }) {
               active={route().current("admin.dashboard.index")}
             >
               Dashboard
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              href={route("admin.users.index")}
+              active={route().current("admin.users.index")}
+            >
+              Users
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              href={route("admin.questionnaires.index")}
+              active={route().current("admin.questionnaires.index")}
+            >
+              Questionnaires
             </ResponsiveNavLink>
           </div>
 
