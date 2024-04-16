@@ -16,8 +16,8 @@ TO DO: Quiz App Roadmap
 
 - Admin Dashboard
     - Admin Authentication
-    - Users Panel: ***NEXT STEP*** (Add: sorting in users panel list)
-    - Questionnaire/Question Panel
+    - Users Panel
+    - Questionnaire/Question Panel:***NEXT STEP***
     - User Answers Panel
     - Dashboard Home Info
 

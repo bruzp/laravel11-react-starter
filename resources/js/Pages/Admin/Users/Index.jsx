@@ -2,49 +2,69 @@ import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import { format } from "date-fns";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
+import TableHeading from "@/Components/TableHeading";
 
-export default function Dashboard({ auth, users, status, search }) {
-  const { data, setData, get } = useForm({
-    search: search,
-    order_by: "updated_at",
-    order: "desc",
-  });
+export default function Dashboard({
+  auth,
+  users,
+  status,
+  query_params = null,
+}) {
+  query_params = query_params || {};
 
-  function destroy(id, name) {
+  const destroy = (id, name) => {
     router.delete(route("admin.users.destroy", id), {
       onBefore: () =>
         confirm("Are you sure you want to delete this user {" + name + "}?"),
     });
-  }
+  };
 
-  function handleOnChange(event) {
-    setData(
-      event.target.name,
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value
-    );
-
-    if (event.target.name == "name") {
-      setName(event.target.value);
+  const searchFieldChanged = (name, value) => {
+    if (value) {
+      query_params[name] = value;
+    } else {
+      delete query_params[name];
     }
-  }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    get(route("admin.users.index"));
-  }
+    router.get(route("admin.users.index"), query_params);
+  };
+
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") return;
+
+    searchFieldChanged(name, e.target.value);
+  };
+
+  const sortChanged = (name) => {
+    if (name === query_params.order_by) {
+      if (query_params.order === "asc") {
+        query_params.order = "desc";
+      } else {
+        query_params.order = "asc";
+      }
+    } else {
+      query_params.order_by = name;
+      query_params.order = "asc";
+    }
+    router.get(route("admin.users.index"), query_params);
+  };
 
   return (
     <AuthenticatedLayout
       admin={auth.admin}
       header={
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Users
-        </h2>
+        <div className="flex justify-between items-center">
+          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            Users
+          </h2>
+          <Link
+            href={route("admin.users.create")}
+            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+          >
+            Add new
+          </Link>
+        </div>
       }
     >
       <Head title="Admin Users" />
@@ -52,127 +72,112 @@ export default function Dashboard({ auth, users, status, search }) {
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="pl-6 pt-6">
-              <Link
-                className="text-yellow-500 hover:text-yellow-700 mr-3"
-                href={route("admin.users.create")}
-              >
-                Create New User
-              </Link>
-            </div>
-
-            <div className="p-6 text-gray-900 dark:text-gray-100">
-              Users Table
-            </div>
-
-            <div className="pl-6 pb-6 col-span-3">
-              <InputLabel htmlFor="search" value="Search" />
-
-              <TextInput
-                id="search"
-                type="text"
-                name="search"
-                value={data.search}
-                className="mt-1"
-                autoComplete="off"
-                onChange={handleOnChange}
-                onBlur={handleSubmit}
-              />
-
-              <InputError message="" className="mt-2" />
-            </div>
-
-            <div className="flex flex-col">
-              <div className="overflow-x-auto">
-                <div className="pl-5 pr-5 w-full inline-block align-middle">
-                  {status && (
-                    <div className="mb-4 font-medium text-sm text-green-600">
-                      {status}
-                    </div>
-                  )}
-                  <div className="overflow-hidden border rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                          >
-                            ID
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                          >
-                            Name
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                          >
-                            Email
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                          >
-                            Created At
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                          >
-                            Updated At
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                          >
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {users.data.map((user) => (
-                          <tr key={user.id}>
-                            <td className="px-6 py-4 text-sm font-medium text-white whitespace-nowrap">
-                              {user.id}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-white whitespace-nowrap">
-                              {user.name}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-white whitespace-nowrap">
-                              {user.email}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-white whitespace-nowrap">
-                              {user.created_at}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-white whitespace-nowrap">
-                              {user.updated_at}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                              <Link
-                                className="text-yellow-500 hover:text-yellow-700 mr-3"
-                                href={route("admin.users.edit", user.id)}
-                              >
-                                Edit
-                              </Link>
-                              <button
-                                onClick={() => destroy(user.id, user.name)}
-                                type="button"
-                                className="text-red-500 hover:text-red-700"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+              <div className="p-6 text-gray-900 dark:text-gray-100">
+                {status && (
+                  <div className="mb-4 font-medium text-sm text-green-600">
+                    {status}
                   </div>
-
-                  <Pagination class="mt-6" links={users.links} />
+                )}
+                <div className="overflow-auto">
+                  <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                      <tr className="text-nowrap">
+                        <TableHeading
+                          name="id"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          ID
+                        </TableHeading>
+                        <TableHeading
+                          name="name"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Name
+                        </TableHeading>
+                        <TableHeading
+                          name="email"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Email
+                        </TableHeading>
+                        <TableHeading
+                          name="created_at"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Create Date
+                        </TableHeading>
+                        <TableHeading
+                          name="updated_at"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Update Date
+                        </TableHeading>
+                        <th className="px-3 py-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                      <tr className="text-nowrap">
+                        <th className="px-3 py-3"></th>
+                        <th colSpan={2} className="px-3 py-3">
+                          <TextInput
+                            defaultValue={query_params.search}
+                            className="w-full"
+                            autoComplete="off"
+                            placeholder="Search Name"
+                            onBlur={(e) =>
+                              searchFieldChanged("search", e.target.value)
+                            }
+                            onKeyPress={(e) => onKeyPress("search", e)}
+                          />
+                        </th>
+                        <th className="px-3 py-3"></th>
+                        <th className="px-3 py-3"></th>
+                        <th className="px-3 py-3"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {users.data.map((user) => (
+                        <tr
+                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                          key={user.id}
+                        >
+                          <td className="px-3 py-2">{user.id}</td>
+                          <td className="px-3 py-2">{user.name}</td>
+                          <td className="px-3 py-2">{user.email}</td>
+                          <td className="px-3 py-2">{user.created_at_for_humans}</td>
+                          <td className="px-3 py-2">{user.updated_at_for_humans}</td>
+                          <td className="px-3 py-2">
+                            <Link
+                              className="text-yellow-500 hover:text-yellow-700 mr-3"
+                              href={route("admin.users.edit", user.id)}
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              onClick={() => destroy(user.id, user.name)}
+                              type="button"
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+                <Pagination class="mt-6" links={users.meta.links} />
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response as InertiaResponse;
 use App\Interfaces\User\UserRepositoryInterface;
@@ -21,9 +22,9 @@ class UsersController extends Controller
     public function index(SearchUsersRequest $request): InertiaResponse
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => $this->userRepository->getUsers(30, $request->validated()),
+            'users' => UserResource::collection($this->userRepository->getUsers(30, $request->validated())),
             'status' => session('status'),
-            'search' => $request->safe()->search ?? '',
+            'query_params' => $request->validated() ?: null,
         ]);
     }
 

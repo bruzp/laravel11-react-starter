@@ -19,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
         $this->getUsersQueryOrderBy($query, $conditions);
 
         return $paginate
-            ? $query->paginate($paginate)
+            ? $query->paginate($paginate)->onEachSide(1)
             : $query->get();
     }
 
