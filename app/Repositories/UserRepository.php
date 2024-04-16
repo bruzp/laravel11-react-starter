@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\User\UserRepositoryInterface;
@@ -13,7 +14,9 @@ class UserRepository implements UserRepositoryInterface
     {
         $query = User::query();
 
-        // Do some more filtering when conditions are set.
+        $this->getUsersQueryFilters($query, $conditions);
+
+        $this->getUsersQueryOrderBy($query, $conditions);
 
         return $paginate
             ? $query->paginate($paginate)
@@ -24,7 +27,6 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::find($id);
     }
-
 
     public function storeUser(array $data): User
     {
@@ -45,5 +47,23 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(User $user): void
     {
         $user->delete();
+    }
+
+    private function getUsersQueryFilters(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['search'])) {
+            $query->where(function (Builder $query) use ($conditions) {
+                $query->whereLike('name', $conditions['search'])
+                    ->orWhereLike('email', $conditions['search']);
+            });
+        }
+    }
+
+    private function getUsersQueryOrderBy(Builder $query, ?array $conditions): void
+    {
+        $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
+        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'updated_at';
+
+        $query->orderBy($order_by, $order);
     }
 }

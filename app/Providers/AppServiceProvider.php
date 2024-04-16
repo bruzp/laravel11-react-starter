@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Builder::macro('whereLike', function ($field, $string) {
+            return $string ? $this->where($field, 'like', '%' . $string . '%') : $this;
+        });
+
+        Builder::macro('orWhereLike', function ($field, $string) {
+            return $string ? $this->orWhere($field, 'like', '%' . $string . '%') : $this;
+        });
     }
 }

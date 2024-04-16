@@ -23,7 +23,7 @@ class UsersController extends Controller
         return Inertia::render('Admin/Users/Index', [
             'users' => $this->userRepository->getUsers(30, $request->validated()),
             'status' => session('status'),
-            'search' => $request->safe()->search,
+            'search' => $request->safe()->search ?? '',
         ]);
     }
 
