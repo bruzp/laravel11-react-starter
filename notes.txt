@@ -21,7 +21,7 @@ TO DO: Quiz App Roadmap
     - Question Panel: ***NEXT STEP***
         - Create Question
         - Edit Question
-        - Reindex Questions
+        - Reindex Questions: Working on this
     - User Answers Panel
     - Dashboard Home Info
 

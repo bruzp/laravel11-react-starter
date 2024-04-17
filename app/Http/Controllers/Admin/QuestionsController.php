@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\Question;
+use Illuminate\Http\Request;
+use App\Models\Questionnaire;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\QuestionResource;
@@ -12,6 +14,7 @@ use App\Interfaces\Question\QuestionRepositoryInterface;
 use App\Http\Requests\Admin\Questions\StoreQuestionRequest;
 use App\Http\Requests\Admin\Questions\UpdateQuestionRequest;
 use App\Http\Requests\Admin\Questions\SearchQuestionsRequest;
+use App\Http\Requests\Admin\Questions\UpdateQuestionsPriorityRequest;
 
 class QuestionsController extends Controller
 {
@@ -70,5 +73,26 @@ class QuestionsController extends Controller
         return redirect()
             ->route('admin.questionnaires.edit', $question->questionnaire_id, 303)
             ->with('question_status', 'Success!');
+    }
+
+    public function reindex(Questionnaire $questionnaire): InertiaResponse
+    {
+        $questionnaire->loadMissing([
+            'questions' => fn($query) => $query->select([
+                'id',
+                'questionnaire_id',
+                'question',
+                'priority',
+            ])
+        ]);
+
+        return Inertia::render('Admin/Questions/ReIndexQuestions', [
+            'questionnaire' => $questionnaire,
+        ]);
+    }
+
+    public function updatePriority(Questionnaire $questionnaire, UpdateQuestionsPriorityRequest $request):RedirectResponse
+    {
+        dd($questionnaire, $request->all(), $request->validated());
     }
 }

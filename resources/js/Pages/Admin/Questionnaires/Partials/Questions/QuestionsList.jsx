@@ -101,12 +101,21 @@ export default function QuestionsList({
             Questions
           </h2>
 
-          <Link
-            href={route("admin.questions.create")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Add new
-          </Link>
+          <div className="">
+            <Link
+              href={route("admin.questions.reindex", questionnaire.id)}
+              className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+            >
+              Re-index
+            </Link>
+
+            <Link
+              href={route("admin.questions.create")}
+              className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 ml-3"
+            >
+              Add new
+            </Link>
+          </div>
         </div>
       </header>
 

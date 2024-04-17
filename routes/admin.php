@@ -66,6 +66,9 @@ Route::middleware('auth.admin')->group(function () {
                 Route::put('{question}', 'update')->name('update');
 
                 Route::delete('{question}', 'destroy')->name('destroy');
+
+                Route::get('reindex/{questionnaire}', 'reindex')->name('reindex');
+                Route::put('update/priority/{questionnaire}', 'updatePriority')->name('update.priority');
             });
         });
     });

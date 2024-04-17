@@ -15,4 +15,6 @@ interface QuestionRepositoryInterface
     public function updateQuestion(Question $question, array $data);
 
     public function deleteQuestion(Question $question);
+
+    public function reIndexPriority(int $questionnaire_id);
 }
