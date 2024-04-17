@@ -123,7 +123,7 @@ export default function Dashboard({
                         >
                           Update Date
                         </TableHeading>
-                        <th className="px-3 py-3 text-right">Actions</th>
+                        <th className="px-3 py-3 text-left">Actions</th>
                       </tr>
                     </thead>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -155,8 +155,12 @@ export default function Dashboard({
                           <td className="px-3 py-2">{user.id}</td>
                           <td className="px-3 py-2">{user.name}</td>
                           <td className="px-3 py-2">{user.email}</td>
-                          <td className="px-3 py-2">{user.created_at_for_humans}</td>
-                          <td className="px-3 py-2">{user.updated_at_for_humans}</td>
+                          <td className="px-3 py-2">
+                            {user.created_at_for_humans}
+                          </td>
+                          <td className="px-3 py-2">
+                            {user.updated_at_for_humans}
+                          </td>
                           <td className="px-3 py-2">
                             <Link
                               className="text-yellow-500 hover:text-yellow-700 mr-3"

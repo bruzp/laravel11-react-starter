@@ -52,6 +52,10 @@ export default function Dashboard({
     router.get(route("admin.questionnaires.index"), query_params);
   };
 
+  const limitString = (str, max_length) => {
+    return str.length > max_length ? str.slice(0, max_length) + "..." : str;
+  };
+
   return (
     <AuthenticatedLayout
       admin={auth.admin}
@@ -125,7 +129,7 @@ export default function Dashboard({
                         >
                           Update Date
                         </TableHeading>
-                        <th className="px-3 py-3 text-right">Actions</th>
+                        <th className="px-3 py-3 text-left">Actions</th>
                       </tr>
                     </thead>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -157,7 +161,7 @@ export default function Dashboard({
                           <td className="px-3 py-2">{questionnaire.id}</td>
                           <td className="px-3 py-2">{questionnaire.title}</td>
                           <td className="px-3 py-2">
-                            {questionnaire.description}
+                            {limitString(questionnaire.description, 100)}
                           </td>
                           <td className="px-3 py-2">
                             {questionnaire.created_at_for_humans}

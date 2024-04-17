@@ -1,4 +1,34 @@
-export default function QuestionsList({ className = "", status }) {
+import { useForm } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import TextAreaInput from "@/Components/TextAreaInput";
+
+export default function QuestionnaireEditForm({
+  className = "",
+  questionnaire,
+  status,
+}) {
+  const { data, setData, put, processing, errors } = useForm({
+    title: questionnaire.title,
+    description: questionnaire.description,
+  });
+
+  function handleOnChange(event) {
+    setData(
+      event.target.name,
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value
+    );
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    put(route("admin.questionnaires.update", questionnaire));
+  }
+
   return (
     <section className={className}>
       <header>
@@ -7,56 +37,48 @@ export default function QuestionsList({ className = "", status }) {
         </h2>
       </header>
 
-      <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="pl-5 pr-5 w-full inline-block align-middle">
-            {status && (
-              <div className="mb-4 font-medium text-sm text-green-600">
-                {status}
-              </div>
-            )}
+      {status && (
+        <div className="mb-4 font-medium text-sm text-green-600">{status}</div>
+      )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-5">
-                <InputLabel htmlFor="title" value="Name" />
+      <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+        <div className="mb-5">
+          <InputLabel htmlFor="title" value="Name" />
 
-                <TextInput
-                  id="title"
-                  name="title"
-                  value={data.title}
-                  className="mt-1 block w-full"
-                  autoComplete="off"
-                  isFocused={true}
-                  onChange={handleOnChange}
-                />
+          <TextInput
+            id="title"
+            name="title"
+            value={data.title}
+            className="mt-1 block w-full"
+            autoComplete="off"
+            isFocused={true}
+            onChange={handleOnChange}
+          />
 
-                <InputError message={errors.title} className="mt-2" />
-              </div>
-
-              <div className="mb-5">
-                <InputLabel htmlFor="description" value="Description" />
-
-                <TextAreaInput
-                  id="description"
-                  name="description"
-                  value={data.description}
-                  className="mt-1 block w-full"
-                  autoComplete="off"
-                  onChange={handleOnChange}
-                />
-
-                <InputError message={errors.description} className="mt-2" />
-              </div>
-
-              <div className="flex items-center justify-end mt-4 mb-5">
-                <PrimaryButton className="ml-4" disabled={processing}>
-                  Submit
-                </PrimaryButton>
-              </div>
-            </form>
-          </div>
+          <InputError message={errors.title} className="mt-2" />
         </div>
-      </div>
+
+        <div className="mb-5">
+          <InputLabel htmlFor="description" value="Description" />
+
+          <TextAreaInput
+            id="description"
+            name="description"
+            value={data.description}
+            className="mt-1 block w-full"
+            autoComplete="off"
+            onChange={handleOnChange}
+          />
+
+          <InputError message={errors.description} className="mt-2" />
+        </div>
+
+        <div className="flex items-center justify-end mt-4 mb-5">
+          <PrimaryButton className="ml-4" disabled={processing}>
+            Submit
+          </PrimaryButton>
+        </div>
+      </form>
     </section>
   );
 }

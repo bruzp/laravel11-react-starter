@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\QuestionsController;
 use App\Http\Controllers\Admin\QuestionnairesController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 
@@ -49,6 +50,22 @@ Route::middleware('auth.admin')->group(function () {
                 Route::put('{questionnaire}', 'update')->name('update');
 
                 Route::delete('{questionnaire}', 'destroy')->name('destroy');
+            });
+        });
+    });
+
+    Route::prefix('questions')->group(function () {
+        Route::name('questions.')->group(function () {
+            Route::controller(QuestionsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+
+                Route::get('create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+
+                Route::get('{question}/edit', 'edit')->name('edit');
+                Route::put('{question}', 'update')->name('update');
+
+                Route::delete('{question}', 'destroy')->name('destroy');
             });
         });
     });

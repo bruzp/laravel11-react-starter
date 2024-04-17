@@ -14,9 +14,9 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
     {
         $query = Questionnaire::query();
 
-        $this->getUsersQueryFilters($query, $conditions);
+        $this->getQuestionnairesQueryFilters($query, $conditions);
 
-        $this->getUsersQueryOrderBy($query, $conditions);
+        $this->getQuestionnairesQueryOrderBy($query, $conditions);
 
         return $paginate
             ? $query->paginate($paginate)->onEachSide(1)
@@ -42,10 +42,15 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
 
     public function deleteQuestionnaire(Questionnaire $questionnaire): void
     {
+        #TODO: test
+        $questionnaire->questions()->update([
+            'deleted_at' => now()
+        ]);
+
         $questionnaire->delete();
     }
 
-    private function getUsersQueryFilters(Builder $query, ?array $conditions): void
+    private function getQuestionnairesQueryFilters(Builder $query, ?array $conditions): void
     {
         if (isset($conditions['search'])) {
             $query->where(function (Builder $query) use ($conditions) {
@@ -59,7 +64,7 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
         }
     }
 
-    private function getUsersQueryOrderBy(Builder $query, ?array $conditions): void
+    private function getQuestionnairesQueryOrderBy(Builder $query, ?array $conditions): void
     {
         $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'updated_at';

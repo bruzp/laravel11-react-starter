@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionnaireResource extends JsonResource
+class QuestionResource extends JsonResource
 {
     public static $wrap = false;
 
@@ -18,16 +18,19 @@ class QuestionnaireResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
+            'questionnaire_id' => $this->questionnaire_id,
+            'question' => $this->question,
+            'choices' => @unserialize($this->choices) ?: [],
+            'answer' => $this->answer,
+            'priority' => $this->priority,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'created_at_for_humans' => $this->created_at->diffForHumans(),
             'updated_at_for_humans' => $this->updated_at->diffForHumans(),
         ];
 
-        if ($this->relationLoaded('questions')) {
-            $data['questions'] = QuestionResource::collection($this->questions);
+        if ($this->relationLoaded('questionnaire')) {
+            $data['questionnaire'] = new QuestionnaireResource($this->questionnaire);
         }
 
         return $data;

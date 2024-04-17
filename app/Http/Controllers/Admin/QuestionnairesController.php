@@ -44,9 +44,12 @@ class QuestionnairesController extends Controller
 
     public function edit(Questionnaire $questionnaire): InertiaResponse
     {
+        $questionnaire->loadMissing('questions');
+
         return Inertia::render('Admin/Questionnaires/Edit', [
-            'questionnaire' => $questionnaire,
+            'questionnaire' => QuestionnaireResource::make($questionnaire),
             'status' => session('status'),
+            'question_status' => session('question_status'),
         ]);
     }
 
