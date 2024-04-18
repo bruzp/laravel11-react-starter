@@ -22,8 +22,9 @@ class UpdateQuestionsPriorityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '*.id' => ['required', 'integer'],
-            '*.priority' => ['required', 'integer'],
+            'question_ids' => ['required', 'array'],
+            'question_ids*.id' => ['required', 'integer'],
+            'question_ids*.priority' => ['required', 'integer'],
         ];
     }
 }

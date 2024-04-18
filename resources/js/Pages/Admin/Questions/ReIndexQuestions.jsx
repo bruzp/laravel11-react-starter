@@ -36,7 +36,7 @@ export default function Dashboard({ auth, questionnaire, status }) {
       priority: index + 1,
     }));
 
-    setData(newData);
+    setData({question_ids: newData});
   };
 
   return (

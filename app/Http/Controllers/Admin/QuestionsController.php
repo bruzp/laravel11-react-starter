@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Question\QuestionHelper;
 use Inertia\Inertia;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Questionnaire;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Helpers\Question\QuestionHelper;
 use App\Http\Resources\QuestionResource;
 use Inertia\Response as InertiaResponse;
 use App\Interfaces\Question\QuestionRepositoryInterface;
@@ -97,7 +97,7 @@ class QuestionsController extends Controller
 
     public function updatePriority(Questionnaire $questionnaire, UpdateQuestionsPriorityRequest $request): RedirectResponse
     {
-        $this->questionRepository->updateQuestionsPriority($request->validated());
+        $this->questionRepository->updateQuestionsPriority($request->safe()->question_ids);
 
         return redirect()
             ->route('admin.questions.reindex', $questionnaire->id, 303)
