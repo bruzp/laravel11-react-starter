@@ -21,7 +21,6 @@ TO DO: Quiz App Roadmap
     - Question Panel: ***NEXT STEP***
         - Create Question
         - Edit Question
-        - Reindex Questions: Working on this
     - User Answers Panel
     - Dashboard Home Info
 
@@ -39,3 +38,17 @@ TO DO: Quiz App Roadmap
 -----------------
 
 - Documentation
+
+=============================
+
+Services = For external services
+    - sending email
+    - accessing external apis
+    - doing processing of data on the background
+    - trigger events
+
+Helpers = static functions
+    - preparing data
+    - formatting data
+
+Traits = reuseable functions

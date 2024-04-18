@@ -23,9 +23,7 @@ class UpdateQuestionsPriorityRequest extends FormRequest
     {
         return [
             '*.id' => ['required', 'integer'],
-            // '*.questionnaire_id' => ['required', 'integer'],
-            // '*.question' => ['required', 'string'],
-            // '*.priority' => ['required', 'integer'],
+            '*.priority' => ['required', 'integer'],
         ];
     }
 }

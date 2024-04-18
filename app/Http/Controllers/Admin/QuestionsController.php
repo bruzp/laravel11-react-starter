@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\Question\QuestionHelper;
 use Inertia\Inertia;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class QuestionsController extends Controller
     {
         $this->questionRepository->deleteQuestion($question);
 
-        $this->questionRepository->reIndexPriority($question->questionnaire_id);
+        $this->questionRepository->updateQuestionsPriority(QuestionHelper::prepareDataForUpdatingPriority($question->questionnaire_id));
 
         return redirect()
             ->route('admin.questionnaires.edit', $question->questionnaire_id, 303)
@@ -78,21 +79,28 @@ class QuestionsController extends Controller
     public function reindex(Questionnaire $questionnaire): InertiaResponse
     {
         $questionnaire->loadMissing([
-            'questions' => fn($query) => $query->select([
-                'id',
-                'questionnaire_id',
-                'question',
-                'priority',
-            ])
+            'questions' => fn($query) =>
+                $query->select([
+                    'id',
+                    'questionnaire_id',
+                    'question',
+                    'priority',
+                ])
+                    ->orderBy('priority')
         ]);
 
         return Inertia::render('Admin/Questions/ReIndexQuestions', [
             'questionnaire' => $questionnaire,
+            'status' => session('status'),
         ]);
     }
 
-    public function updatePriority(Questionnaire $questionnaire, UpdateQuestionsPriorityRequest $request):RedirectResponse
+    public function updatePriority(Questionnaire $questionnaire, UpdateQuestionsPriorityRequest $request): RedirectResponse
     {
-        dd($questionnaire, $request->all(), $request->validated());
+        $this->questionRepository->updateQuestionsPriority($request->validated());
+
+        return redirect()
+            ->route('admin.questions.reindex', $questionnaire->id, 303)
+            ->with('status', 'Success!');
     }
 }

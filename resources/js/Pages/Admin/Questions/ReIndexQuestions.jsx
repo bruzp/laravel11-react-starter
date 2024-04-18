@@ -4,39 +4,39 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Dashboard({ auth, questionnaire }) {
-  const questions = questionnaire.questions;
-  const [data, setData] = useState(questions);
-  const { update_data, setUpdateData, put, processing } = useForm({
-    ids: 1
-  });
+export default function Dashboard({ auth, questionnaire, status }) {
+  const [questions, setQuestions] = useState(questionnaire.questions);
+  const { data, setData, put, processing } = useForm({});
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    setQuestions(questionnaire.questions);
+  }, [questionnaire]);
+
+  useEffect(() => {
+    prepareData();
+  }, [questions]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(data);
+    const items = Array.from(questions);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setData(items);
+    setQuestions(items);
   };
 
   const handleUpdate = () => {
-    const newData = data.map(obj => ({ id: obj.id }));
+    put(route("admin.questions.update.priority", questionnaire));
+  };
 
-    console.log(data, newData);
+  const prepareData = () => {
+    const newData = questions.map((obj, index) => ({
+      id: obj.id,
+      priority: index + 1,
+    }));
 
-    setUpdateData('ids', 2);
-
-
-
-    // console.log(data);
-
-    // put(route("admin.questions.update.priority", questionnaire));
+    setData(newData);
   };
 
   return (
@@ -56,6 +56,11 @@ export default function Dashboard({ auth, questionnaire }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
+              {status && (
+                <div className="mb-4 font-medium text-sm text-green-600">
+                  {status}
+                </div>
+              )}
               <div className="overflow-auto">
                 <DragDropContext onDragEnd={handleDragEnd}>
                   <Droppable droppableId="rows">
@@ -73,7 +78,7 @@ export default function Dashboard({ auth, questionnaire }) {
                           </tr>
                         </thead>
                         <tbody>
-                          {data.map((row, index) => (
+                          {questions.map((row, index) => (
                             <Draggable
                               key={row.id.toString()}
                               draggableId={row.id.toString()}
@@ -102,7 +107,7 @@ export default function Dashboard({ auth, questionnaire }) {
                 <div className="flex items-center justify-end mt-5 mb-5">
                   <PrimaryButton
                     className="ml-4"
-                    // disabled={processing}
+                    disabled={processing}
                     onClick={handleUpdate}
                   >
                     Re-index

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Question;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -42,29 +43,24 @@ class QuestionRepository implements QuestionRepositoryInterface
         $question->save();
     }
 
+    public function updateQuestionsPriority(array $data): void
+    {
+        $case = "CASE id ";
+
+        foreach ($data as $question) {
+            $case .= "WHEN {$question['id']} THEN '{$question['priority']}' ";
+        }
+
+        $case .= "END";
+
+        $ids = implode(',', array_column($data, 'id'));
+
+        DB::update("UPDATE questions SET priority = $case WHERE id IN ($ids)");
+    }
+
     public function deleteQuestion(Question $question): void
     {
         $question->delete();
-    }
-
-    public function reIndexPriority(int $questionnaire_id): void
-    {
-        $conditions = [
-            'questionnaire_id' => $questionnaire_id,
-            'select' => [
-                'id',
-                'questionnaire_id',
-                'priority',
-            ]
-        ];
-        $questions = $this->getQuestions(0, $conditions);
-        $priority = 1;
-
-        foreach ($questions as $question) {
-            $question->update([
-                'priority' => $priority++
-            ]);
-        }
     }
 
     private function getQuestionsQuerySelect(Builder $query, ?array $conditions): void
