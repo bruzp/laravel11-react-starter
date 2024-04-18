@@ -2,6 +2,7 @@ import TableHeading from "@/Components/TableHeading";
 import React, { useState, useEffect } from "react";
 import TextInput from "@/Components/TextInput";
 import { Link, router } from "@inertiajs/react";
+import QuestionsCreate from "./QuestionsCreate";
 
 export default function QuestionsList({
   className = "",
@@ -101,20 +102,15 @@ export default function QuestionsList({
             Questions
           </h2>
 
-          <div className="">
+          <div className="flex items-center">
             <Link
               href={route("admin.questions.reindex", questionnaire.id)}
-              className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 mr-3"
             >
               Re-index
             </Link>
 
-            <Link
-              href={route("admin.questions.create")}
-              className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 ml-3"
-            >
-              Add new
-            </Link>
+            <QuestionsCreate className="max-w-full" />
           </div>
         </div>
       </header>

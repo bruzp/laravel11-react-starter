@@ -52,9 +52,6 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::prefix('questions')->group(function () {
         Route::name('questions.')->group(function () {
-            Route::get('/', [QuestionsController::class, 'index'])->name('index');
-
-            Route::get('create', [QuestionsController::class, 'create'])->name('create');
             Route::post('/', [QuestionsController::class, 'store'])->name('store');
 
             Route::get('{question}/edit', [QuestionsController::class, 'edit'])->name('edit');

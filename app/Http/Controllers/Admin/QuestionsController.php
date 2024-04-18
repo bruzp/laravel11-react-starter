@@ -23,20 +23,6 @@ class QuestionsController extends Controller
     {
     }
 
-    public function index(SearchQuestionsRequest $request): InertiaResponse
-    {
-        return Inertia::render('Admin/Questions/Index', [
-            'questions' => QuestionResource::collection($this->questionRepository->getQuestions(30, $request->validated())),
-            'status' => session('status'),
-            'query_params' => $request->validated() ?: null,
-        ]);
-    }
-
-    public function create(): InertiaResponse
-    {
-        return Inertia::render('Admin/Questions/Create');
-    }
-
     public function store(StoreQuestionRequest $request): RedirectResponse
     {
         $question = $this->questionRepository->storeQuestion($request->prepareForInsert());
