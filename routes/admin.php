@@ -24,52 +24,46 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::name('users.')->group(function () {
-            Route::controller(UsersController::class)->group(function () {
-                Route::get('/', 'index')->name('index');
+            Route::get('/', [UsersController::class, 'index'])->name('index');
 
-                Route::get('create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
+            Route::get('create', [UsersController::class, 'create'])->name('create');
+            Route::post('/', [UsersController::class, 'store'])->name('store');
 
-                Route::get('{user}/edit', 'edit')->name('edit');
-                Route::put('{user}', 'update')->name('update');
+            Route::get('{user}/edit', [UsersController::class, 'edit'])->name('edit');
+            Route::put('{user}', [UsersController::class, 'update'])->name('update');
 
-                Route::delete('{user}', 'destroy')->name('destroy');
-            });
+            Route::delete('{user}', [UsersController::class, 'destroy'])->name('destroy');
         });
     });
 
     Route::prefix('questionnaires')->group(function () {
         Route::name('questionnaires.')->group(function () {
-            Route::controller(QuestionnairesController::class)->group(function () {
-                Route::get('/', 'index')->name('index');
+            Route::get('/', [QuestionnairesController::class, 'index'])->name('index');
 
-                Route::get('create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
+            Route::get('create', [QuestionnairesController::class, 'create'])->name('create');
+            Route::post('/', [QuestionnairesController::class, 'store'])->name('store');
 
-                Route::get('{questionnaire}/edit', 'edit')->name('edit');
-                Route::put('{questionnaire}', 'update')->name('update');
+            Route::get('{questionnaire}/edit', [QuestionnairesController::class, 'edit'])->name('edit');
+            Route::put('{questionnaire}', [QuestionnairesController::class, 'update'])->name('update');
 
-                Route::delete('{questionnaire}', 'destroy')->name('destroy');
-            });
+            Route::delete('{questionnaire}', [QuestionnairesController::class, 'destroy'])->name('destroy');
         });
     });
 
     Route::prefix('questions')->group(function () {
         Route::name('questions.')->group(function () {
-            Route::controller(QuestionsController::class)->group(function () {
-                Route::get('/', 'index')->name('index');
+            Route::get('/', [QuestionsController::class, 'index'])->name('index');
 
-                Route::get('create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
+            Route::get('create', [QuestionsController::class, 'create'])->name('create');
+            Route::post('/', [QuestionsController::class, 'store'])->name('store');
 
-                Route::get('{question}/edit', 'edit')->name('edit');
-                Route::put('{question}', 'update')->name('update');
+            Route::get('{question}/edit', [QuestionsController::class, 'edit'])->name('edit');
+            Route::put('{question}', [QuestionsController::class, 'update'])->name('update');
 
-                Route::delete('{question}', 'destroy')->name('destroy');
+            Route::delete('{question}', [QuestionsController::class, 'destroy'])->name('destroy');
 
-                Route::get('reindex/{questionnaire}', 'reindex')->name('reindex');
-                Route::put('update/priority/{questionnaire}', 'updatePriority')->name('update.priority');
-            });
+            Route::get('reindex/{questionnaire}', [QuestionsController::class, 'reindex'])->name('reindex');
+            Route::put('update/priority/{questionnaire}', [QuestionsController::class, 'updatePriority'])->name('update.priority');
         });
     });
 });
