@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Dashboard({
+export default function QuestionnaireIndex({
   auth,
   questionnaires,
   status,

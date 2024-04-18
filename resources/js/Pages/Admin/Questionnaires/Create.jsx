@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 
-export default function Dashboard({ auth }) {
+export default function QuestionnaireCreate({ auth }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: "",
     description: "",

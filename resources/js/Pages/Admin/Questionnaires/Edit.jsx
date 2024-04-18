@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import QuestionsList from "./Partials/Questions/QuestionsList";
 import QuestionnaireEditForm from "./Partials/QuestionnaireEditForm";
 
-export default function Dashboard({
+export default function QuestionnaireEdit({
   auth,
   questionnaire,
   status,

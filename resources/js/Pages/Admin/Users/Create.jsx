@@ -5,7 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 
-export default function Dashboard({ auth }) {
+export default function UsersCreate({ auth }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: "",
     email: "",

@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { useState, useEffect } from "react";
 
-export default function Dashboard({ auth, user, status }) {
+export default function UsersEdit({ auth, user, status }) {
   const { data, setData, put, processing, errors, reset } = useForm({
     id: user.id,
     name: user.name,

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Dashboard({ auth, questionnaire, status }) {
+export default function ReIndexQuestions({ auth, questionnaire, status }) {
   const [questions, setQuestions] = useState(questionnaire.questions);
   const { data, setData, put, processing } = useForm({});
 
