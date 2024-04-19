@@ -25,7 +25,7 @@ export default function QuestionsCreate({ className = "", question }) {
     setData("choices", Object.values(optionData));
   }, [optionData]);
 
-  const addNew = (e) => {
+  const editQuestionModal = (e) => {
     e.preventDefault();
 
     question.choices.map((choice, index) => {
@@ -44,7 +44,7 @@ export default function QuestionsCreate({ className = "", question }) {
               id={key}
               name={key}
               placeholder="Add option"
-              value={choice}
+              defaultValue={choice}
               type="text"
               className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-11/12 mr-2 border px-4 py-2"
               onChange={(e) => handleOnChangeOption(e, key)}
@@ -116,6 +116,11 @@ export default function QuestionsCreate({ className = "", question }) {
 
       return newHtmlOptions;
     });
+
+    setData((prevData) => ({
+      ...prevData,
+      answer: "",
+    }));
   };
 
   const handleAddOptions = () => {
@@ -157,7 +162,7 @@ export default function QuestionsCreate({ className = "", question }) {
       <Link
         className="text-yellow-500 hover:text-yellow-700 mr-3"
         href=""
-        onClick={(e) => addNew(e)}
+        onClick={(e) => editQuestionModal(e)}
       >
         Edit
       </Link>

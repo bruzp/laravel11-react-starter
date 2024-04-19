@@ -19,7 +19,7 @@ TO DO: Quiz App Roadmap
     - Users Panel
     - Questionnaire Panel
     - Question Panel: ***NEXT STEP***
-        - Edit Question (to fix, when editing question, the choices are not editable)
+        - optimize
     - User Answers Panel
     - Dashboard Home Info
 
