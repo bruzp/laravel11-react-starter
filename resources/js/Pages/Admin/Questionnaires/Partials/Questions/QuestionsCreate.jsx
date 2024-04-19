@@ -41,6 +41,10 @@ export default function QuestionsCreate({ className = "", questionnaire }) {
   const closeModal = () => {
     setShowModal(false);
 
+    setOptionData([]);
+
+    setHtmlOptions([]);
+
     reset();
   };
 
