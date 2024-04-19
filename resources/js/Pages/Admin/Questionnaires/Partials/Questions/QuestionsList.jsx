@@ -110,7 +110,10 @@ export default function QuestionsList({
               Re-index
             </Link>
 
-            <QuestionsCreate className="max-w-full" />
+            <QuestionsCreate
+              className="max-w-full"
+              questionnaire={questionnaire}
+            />
           </div>
         </div>
       </header>

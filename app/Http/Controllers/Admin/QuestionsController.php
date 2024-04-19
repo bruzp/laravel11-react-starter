@@ -23,13 +23,13 @@ class QuestionsController extends Controller
     {
     }
 
-    public function store(StoreQuestionRequest $request): RedirectResponse
+    public function store(Questionnaire $questionnaire, StoreQuestionRequest $request): RedirectResponse
     {
-        $question = $this->questionRepository->storeQuestion($request->prepareForInsert());
+        $question = $this->questionRepository->storeQuestion($request->prepareForInsert($questionnaire->id));
 
         return redirect()
-            ->route('admin.questions.edit', $question->id)
-            ->with('status', 'Success!');
+            ->route('admin.questionnaires.edit', $question->questionnaire_id, 303)
+            ->with('question_status', 'Success!');
     }
 
     public function edit(Question $question): InertiaResponse

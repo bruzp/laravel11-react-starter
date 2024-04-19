@@ -19,7 +19,6 @@ TO DO: Quiz App Roadmap
     - Users Panel
     - Questionnaire Panel
     - Question Panel: ***NEXT STEP***
-        - Create Question
         - Edit Question
     - User Answers Panel
     - Dashboard Home Info

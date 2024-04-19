@@ -52,7 +52,7 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::prefix('questions')->group(function () {
         Route::name('questions.')->group(function () {
-            Route::post('/', [QuestionsController::class, 'store'])->name('store');
+            Route::post('/{questionnaire}', [QuestionsController::class, 'store'])->name('store');
 
             Route::get('{question}/edit', [QuestionsController::class, 'edit'])->name('edit');
             Route::put('{question}', [QuestionsController::class, 'update'])->name('update');
