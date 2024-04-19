@@ -35,7 +35,6 @@ export default function QuestionsCreate({ className = "", questionnaire }) {
     post(route("admin.questions.store", questionnaire), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
-      onFinish: () => reset(),
     });
   };
 
