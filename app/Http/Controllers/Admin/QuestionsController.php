@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\Question;
-use Illuminate\Http\Request;
 use App\Models\Questionnaire;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Helpers\Question\QuestionHelper;
-use App\Http\Resources\QuestionResource;
 use Inertia\Response as InertiaResponse;
 use App\Interfaces\Question\QuestionRepositoryInterface;
 use App\Http\Requests\Admin\Questions\StoreQuestionRequest;
 use App\Http\Requests\Admin\Questions\UpdateQuestionRequest;
-use App\Http\Requests\Admin\Questions\SearchQuestionsRequest;
 use App\Http\Requests\Admin\Questions\UpdateQuestionsPriorityRequest;
 
 class QuestionsController extends Controller
@@ -32,23 +29,13 @@ class QuestionsController extends Controller
             ->with('question_status', 'Success!');
     }
 
-    public function edit(Question $question): InertiaResponse
-    {
-        return Inertia::render('Admin/Questions/Edit', [
-            'questionnaire' => $question,
-            'status' => session('status'),
-        ]);
-    }
-
     public function update(Question $question, UpdateQuestionRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-
-        $this->questionRepository->updateQuestion($question, $data);
+        $this->questionRepository->updateQuestion($question, $request->prepareForInsert());
 
         return redirect()
-            ->route('admin.questions.edit', $question->id, 303)
-            ->with('status', 'Success!');
+            ->route('admin.questionnaires.edit', $question->questionnaire_id, 303)
+            ->with('question_status', 'Success!');
     }
 
     public function destroy(Question $question): RedirectResponse

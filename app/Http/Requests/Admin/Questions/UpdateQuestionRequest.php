@@ -22,7 +22,18 @@ class UpdateQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'question' => ['required', 'string'],
+            'choices' => ['required', 'array'],
+            'answer' => ['required', 'integer'],
         ];
+    }
+
+    public function prepareForInsert(): array
+    {
+        return $this->safe()
+            ->merge([
+                'choices' => serialize($this->safe()->choices),
+            ])
+            ->toArray();
     }
 }

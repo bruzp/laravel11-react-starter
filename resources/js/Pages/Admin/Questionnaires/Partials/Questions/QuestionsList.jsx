@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import TextInput from "@/Components/TextInput";
 import { Link, router } from "@inertiajs/react";
 import QuestionsCreate from "./QuestionsCreate";
+import QuestionsEdit from "./QuestionsEdit";
 
 export default function QuestionsList({
   className = "",
@@ -206,12 +207,10 @@ export default function QuestionsList({
                     {question.updated_at_for_humans}
                   </td>
                   <td className="px-3 py-2">
-                    <Link
-                      className="text-yellow-500 hover:text-yellow-700 mr-3"
-                      href={route("admin.questions.edit", question.id)}
-                    >
-                      Edit
-                    </Link>
+                    <QuestionsEdit
+                      className="max-w-full"
+                      question={question}
+                    />
                     <button
                       onClick={() => destroy(question.id, question.question)}
                       type="button"
