@@ -49,8 +49,8 @@ class AnswerSeeder extends Seeder
                 'answers' => serialize($answers),
                 'result' => $check ? ($check / $total) * 100 : $check,
                 'questionnaire_data' => serialize($questions->toArray()),
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
+                'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                'updated_at' => fake()->dateTimeBetween('-5 years', 'now'),
             ];
         }
 

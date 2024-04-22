@@ -22,6 +22,9 @@ return new class extends Migration {
 
             $table->index('questionnaire_id');
             $table->index('user_id');
+            $table->index(['deleted_at', 'updated_at']);
+            $table->index(['deleted_at', 'created_at']);
+            $table->index(['deleted_at', 'result']);
         });
     }
 

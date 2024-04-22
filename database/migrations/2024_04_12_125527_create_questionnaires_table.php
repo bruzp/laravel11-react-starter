@@ -13,12 +13,13 @@ return new class extends Migration {
         Schema::create('questionnaires', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admin_id');
-            $table->text('title');
+            $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('admin_id');
+            $table->index('title');
         });
     }
 

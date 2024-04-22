@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\AnswerController;
 use App\Http\Controllers\Admin\QuestionsController;
 use App\Http\Controllers\Admin\QuestionnairesController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
@@ -60,6 +61,14 @@ Route::middleware('auth.admin')->group(function () {
 
             Route::get('reindex/{questionnaire}', [QuestionsController::class, 'reindex'])->name('reindex');
             Route::put('update/priority/{questionnaire}', [QuestionsController::class, 'updatePriority'])->name('update.priority');
+        });
+    });
+
+    Route::prefix('answers')->group(function () {
+        Route::name('answers.')->group(function () {
+            Route::get('/', [AnswerController::class, 'index'])->name('index');
+
+            Route::delete('{question}', [QuestionsController::class, 'destroy'])->name('destroy');
         });
     });
 });

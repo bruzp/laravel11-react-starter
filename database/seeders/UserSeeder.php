@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
                 'name' => fake()->name(),
                 'email' => fake()->email(),
                 'password' => Hash::make('password'),
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
+                'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                'updated_at' => fake()->dateTimeBetween('-5 years', 'now'),
             ];
         }
 

@@ -24,8 +24,8 @@ class QuestionnaireSeeder extends Seeder
                 'admin_id' => $admin->id,
                 'title' => fake()->sentence(),
                 'description' => fake()->paragraph(),
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
+                'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                'updated_at' => fake()->dateTimeBetween('-5 years', 'now'),
             ];
         }
 
@@ -54,8 +54,8 @@ class QuestionnaireSeeder extends Seeder
                     'choices' => serialize($choices),
                     'answer' => array_rand($choices),
                     'priority' => $x + 1,
-                    'created_at' => now()->toDateTimeString(),
-                    'updated_at' => now()->toDateTimeString(),
+                    'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                    'updated_at' => fake()->dateTimeBetween('-5 years', 'now'),
                 ];
             }
         }

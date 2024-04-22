@@ -5,18 +5,18 @@ import { format } from "date-fns";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
 
-export default function UsersIndex({
+export default function AnswersIndex({
   auth,
-  users,
+  answers,
   status,
   query_params = null,
 }) {
   query_params = query_params || {};
 
   const destroy = (id, name) => {
-    router.delete(route("admin.users.destroy", id), {
+    router.delete(route("admin.answers.destroy", id), {
       onBefore: () =>
-        confirm("Are you sure you want to delete this user {" + name + "}?"),
+        confirm("Are you sure you want to delete this answer {" + name + "}?"),
     });
   };
 
@@ -27,7 +27,7 @@ export default function UsersIndex({
       delete query_params[name];
     }
 
-    router.get(route("admin.users.index"), query_params);
+    router.get(route("admin.answers.index"), query_params);
   };
 
   const onKeyPress = (name, e) => {
@@ -47,7 +47,7 @@ export default function UsersIndex({
       query_params.order_by = name;
       query_params.order = "asc";
     }
-    router.get(route("admin.users.index"), query_params);
+    router.get(route("admin.answers.index"), query_params);
   };
 
   return (
@@ -56,18 +56,12 @@ export default function UsersIndex({
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Users
+            Answers
           </h2>
-          <Link
-            href={route("admin.users.create")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Add new
-          </Link>
         </div>
       }
     >
-      <Head title="Admin Users" />
+      <Head title="Admin Answers" />
 
       <div className="py-12">
         <div className="max-w-full mx-auto sm:px-6 lg:px-8">
@@ -92,12 +86,20 @@ export default function UsersIndex({
                           ID
                         </TableHeading>
                         <TableHeading
+                          name="title"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Questionnaire
+                        </TableHeading>
+                        <TableHeading
                           name="name"
                           sort_field={query_params.order_by}
                           sort_direction={query_params.order}
                           sortChanged={sortChanged}
                         >
-                          Name
+                          Examinee Name
                         </TableHeading>
                         <TableHeading
                           name="email"
@@ -105,7 +107,15 @@ export default function UsersIndex({
                           sort_direction={query_params.order}
                           sortChanged={sortChanged}
                         >
-                          Email
+                          Examinee Email
+                        </TableHeading>
+                        <TableHeading
+                          name="result"
+                          sort_field={query_params.order_by}
+                          sort_direction={query_params.order}
+                          sortChanged={sortChanged}
+                        >
+                          Result
                         </TableHeading>
                         <TableHeading
                           name="created_at"
@@ -129,7 +139,7 @@ export default function UsersIndex({
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                       <tr className="text-nowrap">
                         <th className="px-3 py-3"></th>
-                        <th colSpan={2} className="px-3 py-3">
+                        <th colSpan={3} className="px-3 py-3">
                           <TextInput
                             defaultValue={query_params.search}
                             className="w-full"
@@ -144,32 +154,29 @@ export default function UsersIndex({
                         <th className="px-3 py-3"></th>
                         <th className="px-3 py-3"></th>
                         <th className="px-3 py-3"></th>
+                        <th className="px-3 py-3"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {users.data.map((user) => (
+                      {answers.data.map((answer) => (
                         <tr
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                          key={user.id}
+                          key={answer.id}
                         >
-                          <td className="px-3 py-2">{user.id}</td>
-                          <td className="px-3 py-2">{user.name}</td>
-                          <td className="px-3 py-2">{user.email}</td>
+                          <td className="px-3 py-2">{answer.id}</td>
+                          <td className="px-3 py-2">{answer.title}</td>
+                          <td className="px-3 py-2">{answer.name}</td>
+                          <td className="px-3 py-2">{answer.email}</td>
+                          <td className="px-3 py-2">{answer.result}</td>
                           <td className="px-3 py-2">
-                            {user.created_at_for_humans}
+                            {answer.created_at_for_humans}
                           </td>
                           <td className="px-3 py-2">
-                            {user.updated_at_for_humans}
+                            {answer.updated_at_for_humans}
                           </td>
                           <td className="px-3 py-2">
-                            <Link
-                              className="text-yellow-500 hover:text-yellow-700 mr-3"
-                              href={route("admin.users.edit", user.id)}
-                            >
-                              Edit
-                            </Link>
                             <button
-                              onClick={() => destroy(user.id, user.name)}
+                              onClick={() => destroy(action.id, action.name)}
                               type="button"
                               className="text-red-500 hover:text-red-700"
                             >
@@ -181,7 +188,7 @@ export default function UsersIndex({
                     </tbody>
                   </table>
                 </div>
-                <Pagination class="mt-6" links={users.meta.links} />
+                <Pagination class="mt-6" links={answers.meta.links} />
               </div>
             </div>
           </div>

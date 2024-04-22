@@ -18,9 +18,8 @@ TO DO: Quiz App Roadmap
     - Admin Authentication
     - Users Panel
     - Questionnaire Panel
-    - Question Panel: ***NEXT STEP***
-        - optimize
-    - User Answers Panel
+    - Question Panel
+    - User Answers Panel: ***NEXT STEP***
     - Dashboard Home Info
 
 -----------------

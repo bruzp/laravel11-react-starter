@@ -12,7 +12,7 @@ export default function Authenticated({ admin, header, children }) {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="shrink-0 flex items-center">
@@ -27,6 +27,15 @@ export default function Authenticated({ admin, header, children }) {
                   active={route().current("admin.dashboard.index")}
                 >
                   Dashboard
+                </NavLink>
+              </div>
+
+              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <NavLink
+                  href={route("admin.answers.index")}
+                  active={route().current("admin.answers.index")}
+                >
+                  Answers
                 </NavLink>
               </div>
 
@@ -142,6 +151,13 @@ export default function Authenticated({ admin, header, children }) {
             </ResponsiveNavLink>
 
             <ResponsiveNavLink
+              href={route("admin.answers.index")}
+              active={route().current("admin.answers.index")}
+            >
+              Answers
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
               href={route("admin.users.index")}
               active={route().current("admin.users.index")}
             >
@@ -181,7 +197,7 @@ export default function Authenticated({ admin, header, children }) {
 
       {header && (
         <header className="bg-white dark:bg-gray-800 shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
             {header}
           </div>
         </header>
