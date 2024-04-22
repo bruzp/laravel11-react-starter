@@ -1,0 +1,23 @@
+Sharing Guide
+1.) Naming Convention
+Controller
+    - Resource controllers (with CRUD) should be plural.
+
+2.) Definition
+Services
+    - Refers to business logic that may not be involved in manipulating database.
+    - Connecting to third party application.
+
+Traits
+    - Re-useable functions
+    - Should not be used to replace the function of a service or helper.
+
+Helpers
+    - Functions that are not business logic and does not involve on connecting to db server.
+    - Mainly used to manipulate data.
+        - formatting date
+        - transformming data
+
+Repositories
+    - Where we write our queries.
+    - Repositories will be controlled by interfaces.
