@@ -18,7 +18,7 @@ class AnswerSeeder extends Seeder
         $questionnaires = Questionnaire::with('questions')->get();
 
         $limit = 20000;
-        $chunk_size = 2000;
+        $chunk_size = 1000;
         $data = [];
 
         for ($i = 0; $i < $limit; ++$i) {

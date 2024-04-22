@@ -68,7 +68,7 @@ Route::middleware('auth.admin')->group(function () {
         Route::name('answers.')->group(function () {
             Route::get('/', [AnswerController::class, 'index'])->name('index');
 
-            Route::delete('{question}', [QuestionsController::class, 'destroy'])->name('destroy');
+            Route::delete('{answer}', [AnswerController::class, 'destroy'])->name('destroy');
         });
     });
 });

@@ -167,7 +167,7 @@ export default function AnswersIndex({
                           <td className="px-3 py-2">{answer.title}</td>
                           <td className="px-3 py-2">{answer.name}</td>
                           <td className="px-3 py-2">{answer.email}</td>
-                          <td className="px-3 py-2">{answer.result}</td>
+                          <td className="px-3 py-2">{answer.result}%</td>
                           <td className="px-3 py-2">
                             {answer.created_at_for_humans}
                           </td>
@@ -176,7 +176,7 @@ export default function AnswersIndex({
                           </td>
                           <td className="px-3 py-2">
                             <button
-                              onClick={() => destroy(action.id, action.name)}
+                              onClick={() => destroy(answer.id, answer.name)}
                               type="button"
                               className="text-red-500 hover:text-red-700"
                             >
