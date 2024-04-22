@@ -7,7 +7,7 @@ use App\Models\Questionnaire;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response as InertiaResponse;
-use App\Http\Resources\QuestionnaireResource;
+use App\Http\Resources\Admin\QuestionnaireResource;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
 use App\Http\Requests\Admin\Questionnaires\StoreQuestionnaireRequest;
 use App\Http\Requests\Admin\Questionnaires\UpdateQuestionnaireRequest;

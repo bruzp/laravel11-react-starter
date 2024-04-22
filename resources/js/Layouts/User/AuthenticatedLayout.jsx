@@ -29,6 +29,14 @@ export default function Authenticated({ user, header, children }) {
                   Dashboard
                 </NavLink>
               </div>
+              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <NavLink
+                  href={route("answers.index")}
+                  active={route().current("answers.index")}
+                >
+                  My Answers
+                </NavLink>
+              </div>
             </div>
 
             <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -124,6 +132,12 @@ export default function Authenticated({ user, header, children }) {
               active={route().current("dashboard")}
             >
               Dashboard
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("answers.index")}
+              active={route().current("answers.index")}
+            >
+              My Answers
             </ResponsiveNavLink>
           </div>
 

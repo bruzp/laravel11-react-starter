@@ -6,8 +6,8 @@ use Inertia\Inertia;
 use App\Models\Answer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Resources\AnswerResource;
 use Inertia\Response as InertiaResponse;
+use App\Http\Resources\Admin\AnswerResource;
 use App\Interfaces\Answer\AnswerRepositoryInterface;
 use App\Http\Requests\Admin\Answer\SearchAnswersRequest;
 

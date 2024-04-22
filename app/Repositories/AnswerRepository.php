@@ -63,6 +63,10 @@ class AnswerRepository implements AnswerRepositoryInterface
                     ->orWhereLike('description', $conditions['search']);
             });
         }
+
+        if (isset($conditions['user_id'])) {
+            $query->where('user_id', $conditions['user_id']);
+        }
     }
 
     private function getAnswersQueryOrderBy(Builder $query, ?array $conditions): void
