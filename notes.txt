@@ -1,19 +1,14 @@
 TO DO: Quiz App Roadmap
 -----------------
-
 - Create DB Tables
-
 -----------------
-
 - Create seeders for the ff.
     - users
     - admin
     - questionnaire
     - questions
     - answers
-
 -----------------
-
 - Admin Dashboard
     - Admin Authentication
     - Users Panel
@@ -22,27 +17,19 @@ TO DO: Quiz App Roadmap
     - User Answers Panel
         - View Result: *** PENDING ***
     - Dashboard Home Info
-
 -----------------
 - User Dashobard
     - User Answered Exams: ***NEXT STEP***
 -----------------
-
 - Frontend
     - Menus Exam
     - Front home page leader board
     - Answer questions
-
 -----------------
-
 - Testing
-
 -----------------
-
 - Documentation
-
 =============================
-
 Services = For external services
     - sending email
     - accessing external apis
