@@ -1,7 +1,7 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\AnswerController;
 use App\Http\Controllers\Admin\QuestionsController;
@@ -16,9 +16,8 @@ Route::middleware('guest.admin')->group(function () {
 });
 
 Route::middleware('auth.admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboard.index');
+    Route::get('/', [IndexController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard.index');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');

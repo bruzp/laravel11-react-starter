@@ -21,8 +21,11 @@ TO DO: Quiz App Roadmap
     - Question Panel
     - User Answers Panel
         - View Result: *** PENDING ***
-    - Dashboard Home Info: ***NEXT STEP***
+    - Dashboard Home Info
 
+-----------------
+- User Dashobard
+    - User Answered Exams: ***NEXT STEP***
 -----------------
 
 - Frontend

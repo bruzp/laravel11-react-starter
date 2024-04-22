@@ -13,18 +13,18 @@ class AnswerRepository implements AnswerRepositoryInterface
     public function getAnswers(int $paginate = 0, array $conditions = []): Collection|LengthAwarePaginator
     {
         $query = Answer::query()
-            ->select([
-                'answers.*',
-                'questionnaires.title',
-                'users.name',
-                'users.email',
-            ])
             ->join('questionnaires', 'questionnaires.id', '=', 'answers.questionnaire_id')
             ->join('users', 'users.id', '=', 'answers.user_id');
+
+        $this->getAnswersQuerySelect($query, $conditions);
 
         $this->getAnswersQueryFilters($query, $conditions);
 
         $this->getAnswersQueryOrderBy($query, $conditions);
+
+        if (!$paginate) {
+            $this->getAnswersQueryLimit($query, $conditions);
+        }
 
         return $paginate
             ? $query->paginate($paginate)->onEachSide(1)
@@ -71,5 +71,26 @@ class AnswerRepository implements AnswerRepositoryInterface
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'updated_at';
 
         $query->orderBy($order_by, $order);
+    }
+
+    private function getAnswersQueryLimit(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['limit'])) {
+            $query->limit($conditions['limit']);
+        }
+    }
+
+    private function getAnswersQuerySelect(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['select'])) {
+            $query->select($conditions['select']);
+        } else {
+            $query->select([
+                'answers.*',
+                'questionnaires.title',
+                'users.name',
+                'users.email',
+            ]);
+        }
     }
 }

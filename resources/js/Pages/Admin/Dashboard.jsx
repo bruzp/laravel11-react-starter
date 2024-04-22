@@ -1,13 +1,14 @@
 import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { format } from 'date-fns';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, top10_users }) {
   return (
     <AuthenticatedLayout
       admin={auth.admin}
       header={
         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Admin Dashboard
+          Top 10 All Time Highest Examinee Ratings
         </h2>
       }
     >
@@ -15,9 +16,17 @@ export default function Dashboard({ auth }) {
 
       <div className="py-12">
         <div className="max-w-full mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+          <div className="bg-dark dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              You're logged in!
+              <div className="space-y-4">
+                {top10_users.map((user) => (
+                  <div className="card bg-dark shadow-md rounded p-4">
+                    <h2 className="font-bold text-lg">{user.name}</h2>
+                    <p>{user.result}%</p>
+                    <p className="text-sm text-gray-500">{format(user.created_at, 'yyyy-mm-dd')}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
