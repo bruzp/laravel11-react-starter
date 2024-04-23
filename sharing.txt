@@ -21,3 +21,7 @@ Helpers
 Repositories
     - Where we write our queries.
     - Repositories will be controlled by interfaces.
+
+-------
+
+Frontend can use resource from admin, but changing is not allowed. (If want to change, create another separate resource for the frontend.)

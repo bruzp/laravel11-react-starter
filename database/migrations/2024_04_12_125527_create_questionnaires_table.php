@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     /**
@@ -20,7 +21,13 @@ return new class extends Migration {
 
             $table->index('admin_id');
             $table->index('title');
+
+            $table->index(['deleted_at', 'title']);
+            $table->index(['deleted_at', 'updated_at']);
+            $table->index(['deleted_at', 'created_at']);
         });
+
+        DB::statement("CREATE INDEX deleted_at_description_index ON questionnaires (deleted_at,description(191))");
     }
 
     /**
