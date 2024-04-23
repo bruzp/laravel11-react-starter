@@ -43,8 +43,10 @@ class QuestionnairesController extends Controller
      */
     public function store(Questionnaire $questionnaire, StoreQuestionnairesRequest $request): InertiaResponse
     {
-        // create a job to process checking and saving the result.
+        $questionnaire->loadMissing('questions');
 
-        dd($questionnaire, $request->validated(), $request->prepareForInsert());
+        // create event listener that someone take exam and send email
+
+        dd($questionnaire, $questionnaire->questions, $request->validated(), $request->prepareForInsert($questionnaire));
     }
 }

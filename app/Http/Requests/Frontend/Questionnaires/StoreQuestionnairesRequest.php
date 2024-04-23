@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Frontend\Questionnaires;
 
+use App\Models\Questionnaire;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Questionnaire\QuestionnaireService;
 
 class StoreQuestionnairesRequest extends FormRequest
 {
@@ -27,14 +29,14 @@ class StoreQuestionnairesRequest extends FormRequest
         ];
     }
 
-    public function prepareForInsert(): array
+    public function prepareForInsert(Questionnaire $questionnaire): array
     {
         return [
-            'questionnaire_id' => 'xxx',
-            'user_id' => 'xxx',
-            'answers' => 'xxx',
-            'result' => 'xxx',
-            'questionnaire_data' => 'xxx',
+            'questionnaire_id' => $questionnaire->id,
+            'user_id' => auth()->user()->id,
+            'answers' => serialize($this->safe()->answers),
+            'result' => QuestionnaireService::checkExam($this->safe()->answers, $questionnaire->questions),
+            'questionnaire_data' => serialize($questionnaire->questions->toArray()),
         ];
     }
 }
