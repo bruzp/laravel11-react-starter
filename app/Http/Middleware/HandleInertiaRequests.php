@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Inertia\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Application;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,6 +38,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'admin' => Auth::guard(Admin::GUARD)->user(),
             ],
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
         ];
     }
 }
