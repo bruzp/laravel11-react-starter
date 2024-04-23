@@ -19,9 +19,10 @@ TO DO: Quiz App Roadmap
     - Dashboard Home Info
 -----------------
 - User Dashobard
-    - User Answered Exams: ***NEXT STEP***
+    - User Answered Exams
+        - View Result: *** PENDING ***
 -----------------
-- Frontend
+- Frontend: ***NEXT STEP***
     - Menus Exam
     - Front home page leader board
     - Answer questions

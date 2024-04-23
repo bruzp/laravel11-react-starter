@@ -100,18 +100,17 @@ export default function AnswersIndex({ auth, answers, query_params }) {
                         >
                           Update Date
                         </TableHeading>
-                        <th className="px-3 py-3 text-left">Actions</th>
                       </tr>
                     </thead>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                       <tr className="text-nowrap">
                         <th className="px-3 py-3"></th>
-                        <th colSpan={2} className="px-3 py-3">
+                        <th className="px-3 py-3">
                           <TextInput
                             defaultValue={query_params.search}
                             className="w-full"
                             autoComplete="off"
-                            placeholder="Search Name"
+                            placeholder="Search Questionnaire"
                             onBlur={(e) =>
                               searchFieldChanged("search", e.target.value)
                             }
@@ -143,7 +142,7 @@ export default function AnswersIndex({ auth, answers, query_params }) {
                     </tbody>
                   </table>
                 </div>
-                <Pagination class="mt-6" links={answers.links} />
+                <Pagination className="mt-6" links={answers.meta.links} />
               </div>
             </div>
           </div>
