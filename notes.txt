@@ -16,6 +16,7 @@ TO DO: Quiz App Roadmap
     - Question Panel
     - User Answers Panel
         - View Result: *** PENDING ***
+        - Improve sorting performance of joined table columns: *** PENDING ***
     - Dashboard Home Info
 -----------------
 - User Dashobard
@@ -31,14 +32,6 @@ TO DO: Quiz App Roadmap
 -----------------
 - Documentation
 =============================
-Services = For external services
-    - sending email
-    - accessing external apis
-    - doing processing of data on the background
-    - trigger events
 
-Helpers = static functions
-    - preparing data
-    - formatting data
-
-Traits = reuseable functions
+Improvements
+- Repository functions "paginate"
