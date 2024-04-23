@@ -15,7 +15,7 @@ export default function AnswersIndex({ auth, answers, query_params }) {
       delete query_params[name];
     }
 
-    router.get(route("answers.index"), query_params);
+    router.get(route("user.answers.index"), query_params);
   };
 
   const onKeyPress = (name, e) => {
@@ -35,7 +35,7 @@ export default function AnswersIndex({ auth, answers, query_params }) {
       query_params.order_by = name;
       query_params.order = "asc";
     }
-    router.get(route("answers.index"), query_params);
+    router.get(route("user.answers.index"), query_params);
   };
 
   return (
