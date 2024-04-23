@@ -3,7 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\Frontend\QuestionnaireController;
+use App\Http\Controllers\Frontend\QuestionnairesController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -14,8 +14,9 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
-Route::get('/exams', [QuestionnaireController::class, 'index'])->name('exams');
+Route::get('/exams', [QuestionnairesController::class, 'index'])->name('exams');
 
-Route::get('take-exam/{questionnaire}', [QuestionnaireController::class, 'create'])->name('take-exam');
+Route::get('take-exam/{questionnaire}', [QuestionnairesController::class, 'create'])->name('take-exam');
+Route::post('check-exam/{questionnaire}', [QuestionnairesController::class, 'store'])->name('check-exam');
 
 require __DIR__ . '/auth.php';

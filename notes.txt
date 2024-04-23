@@ -25,8 +25,8 @@ TO DO: Quiz App Roadmap
 -----------------
 - Frontend: ***NEXT STEP***
     - Menus Exam
-    - Front home page leader board
     - Answer questions
+    - Front home page leader board
 -----------------
 - Testing
 -----------------
@@ -35,3 +35,5 @@ TO DO: Quiz App Roadmap
 
 Improvements
 - Repository functions "paginate"
+- DB Indexing
+- reduce the data that can viewed in dev tools
