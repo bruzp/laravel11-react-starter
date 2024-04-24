@@ -29,8 +29,10 @@ TO DO: Quiz App Roadmap
     - Front home page leader board
 -----------------
 - Testing: ***NEXT STEP***
+    - Admin Side
 -----------------
 - Documentation
+    - Sharing Notes
 =============================
 
 Improvements
