@@ -17,8 +17,12 @@ export default function Dashboard({ auth, rank }) {
         <div className="max-w-full mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              You are currently ranked {rank.rank_text} overall, with an average
-              result of {rank.max_result}%.
+              <p>
+                You are currently ranked as <strong>{rank.rank_text}</strong>{" "}
+                overall—a fantastic achievement! Your highest score so far is an
+                impressive <strong>{rank.max_result}%</strong>. Keep up the
+                great work!
+              </p>
             </div>
           </div>
         </div>
