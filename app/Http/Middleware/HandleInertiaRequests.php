@@ -38,8 +38,6 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'admin' => Auth::guard(Admin::GUARD)->user(),
             ],
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
         ];
     }
 }

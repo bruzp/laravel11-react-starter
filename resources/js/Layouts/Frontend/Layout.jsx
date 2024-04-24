@@ -1,11 +1,8 @@
 import { Link } from "@inertiajs/react";
 
-export default function FrontendLayout({
-  user,
-  laravelVersion,
-  phpVersion,
-  children,
-}) {
+export default function FrontendLayout({ user, children }) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
       <img
@@ -70,7 +67,7 @@ export default function FrontendLayout({
           <main className="mt-6">{children}</main>
 
           <footer className="py-16 text-center text-sm text-black dark:text-white/70">
-            Laravel v{laravelVersion} (PHP v{phpVersion})
+            © {currentYear} Exam App. All rights reserved.
           </footer>
         </div>
       </div>

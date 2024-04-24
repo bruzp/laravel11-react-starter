@@ -18,5 +18,6 @@ Route::get('/exams', [QuestionnairesController::class, 'index'])->name('exams');
 
 Route::get('take-exam/{questionnaire}', [QuestionnairesController::class, 'create'])->name('take-exam');
 Route::post('check-exam/{questionnaire}', [QuestionnairesController::class, 'store'])->name('check-exam');
+Route::get('exam-result', [QuestionnairesController::class, 'storeComplete'])->name('exam-result');
 
 require __DIR__ . '/auth.php';
