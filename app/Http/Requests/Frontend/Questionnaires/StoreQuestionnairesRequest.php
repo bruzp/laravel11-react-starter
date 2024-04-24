@@ -35,6 +35,7 @@ class StoreQuestionnairesRequest extends FormRequest
             'questionnaire_id' => $questionnaire->id,
             'user_id' => auth()->user()->id,
             'answers' => serialize($this->safe()->answers),
+            #TODO: Change to non-static method
             'result' => QuestionnaireService::checkExam($this->safe()->answers, $questionnaire->questions),
             'questionnaire_data' => serialize($questionnaire->questions->toArray()),
         ];

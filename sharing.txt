@@ -17,6 +17,7 @@ Helpers
     - Mainly used to manipulate data.
         - formatting date
         - transformming data
+    - light functions only
 
 Repositories
     - Where we write our queries.
