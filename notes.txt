@@ -37,3 +37,4 @@ Improvements
 - Repository functions "paginate"
 - DB Indexing
 - reduce the data that can viewed in dev tools
+- add return type to the interfaces

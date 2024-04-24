@@ -14,6 +14,8 @@ class UserRepository implements UserRepositoryInterface
     {
         $query = User::query();
 
+        $this->getUsersQuerySelect($query, $conditions);
+
         $this->getUsersQueryFilters($query, $conditions);
 
         $this->getUsersQueryOrderBy($query, $conditions);
@@ -47,6 +49,17 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(User $user): void
     {
         $user->delete();
+    }
+
+    private function getUsersQuerySelect(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['select'])) {
+            $query->select($conditions['select']);
+        } else {
+            $query->select([
+                'users.*',
+            ]);
+        }
     }
 
     private function getUsersQueryFilters(Builder $query, ?array $conditions): void

@@ -5,7 +5,12 @@ import { format } from "date-fns";
 import TextInput from "@/Components/Frontend/TextInput";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Exam({ auth, questionnaires, query_params }) {
+export default function Exam({
+  auth,
+  questionnaires,
+  query_params,
+  user_answers,
+}) {
   query_params = query_params || {};
 
   const searchFieldChanged = (name, value) => {
@@ -104,7 +109,7 @@ export default function Exam({ auth, questionnaires, query_params }) {
                 {questionnaires.data.map((questionnaire) => (
                   <tr className="border-b" key={questionnaire.id}>
                     <td className="px-3 py-2">
-                      {auth.user ? (
+                      {auth.user && !user_answers.includes(questionnaire.id) ? (
                         <Link
                           className="text-blue-500 hover:text-blue-700 mr-3"
                           href={route("take-exam", questionnaire)}

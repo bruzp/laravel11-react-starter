@@ -67,6 +67,10 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         if (isset($conditions['select'])) {
             $query->select($conditions['select']);
+        } else {
+            $query->select([
+                'questions.*',
+            ]);
         }
     }
 
@@ -86,7 +90,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     private function getQuestionsQueryOrderBy(Builder $query, ?array $conditions): void
     {
         $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
-        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'priority';
+        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'questions.priority';
 
         $query->orderBy($order_by, $order);
     }

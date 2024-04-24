@@ -31,6 +31,15 @@ class AnswerRepository implements AnswerRepositoryInterface
             : $query->get();
     }
 
+    public function findAnswer(array $conditions): ?Answer
+    {
+        $query = Answer::query();
+
+        $this->getAnswersQueryFilters($query, $conditions);
+
+        return $query->first();
+    }
+
     public function findAnswerById(int $id): ?Answer
     {
         return Answer::find($id);
@@ -53,6 +62,20 @@ class AnswerRepository implements AnswerRepositoryInterface
         $answer->delete();
     }
 
+    private function getAnswersQuerySelect(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['select'])) {
+            $query->select($conditions['select']);
+        } else {
+            $query->select([
+                'answers.*',
+                'questionnaires.title',
+                'users.name',
+                'users.email',
+            ]);
+        }
+    }
+
     private function getAnswersQueryFilters(Builder $query, ?array $conditions): void
     {
         if (isset($conditions['search'])) {
@@ -67,12 +90,28 @@ class AnswerRepository implements AnswerRepositoryInterface
         if (isset($conditions['user_id'])) {
             $query->where('user_id', $conditions['user_id']);
         }
+
+        if (isset($conditions['questionnaire_id'])) {
+            $query->where('questionnaire_id', $conditions['questionnaire_id']);
+        }
+
+        if (isset($conditions['questionnaire_ids'])) {
+            $query->whereIntegerInRaw('questionnaire_id', $conditions['questionnaire_ids']);
+        }
+
+        if (isset($conditions['distinct'])) {
+            $query->distinct();
+        }
     }
 
     private function getAnswersQueryOrderBy(Builder $query, ?array $conditions): void
     {
+        if (isset($conditions['no_order_by'])) {
+            return;
+        }
+
         $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
-        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'updated_at';
+        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'answers.updated_at';
 
         $query->orderBy($order_by, $order);
     }
@@ -81,20 +120,6 @@ class AnswerRepository implements AnswerRepositoryInterface
     {
         if (isset($conditions['limit'])) {
             $query->limit($conditions['limit']);
-        }
-    }
-
-    private function getAnswersQuerySelect(Builder $query, ?array $conditions): void
-    {
-        if (isset($conditions['select'])) {
-            $query->select($conditions['select']);
-        } else {
-            $query->select([
-                'answers.*',
-                'questionnaires.title',
-                'users.name',
-                'users.email',
-            ]);
         }
     }
 }

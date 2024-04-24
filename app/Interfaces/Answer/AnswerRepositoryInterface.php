@@ -8,6 +8,8 @@ interface AnswerRepositoryInterface
 {
     public function getAnswers(int $paginate, array $conditions = []);
 
+    public function findAnswer(array $conditions);
+
     public function findAnswerById(int $id);
 
     public function storeAnswer(array $data);

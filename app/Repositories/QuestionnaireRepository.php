@@ -14,6 +14,8 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
     {
         $query = Questionnaire::query();
 
+        $this->getQuestionnairesQuerySelect($query, $conditions);
+
         $this->getQuestionnairesQueryFilters($query, $conditions);
 
         $this->getQuestionnairesQueryOrderBy($query, $conditions);
@@ -50,6 +52,17 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
         $questionnaire->delete();
     }
 
+    private function getQuestionnairesQuerySelect(Builder $query, ?array $conditions): void
+    {
+        if (isset($conditions['select'])) {
+            $query->select($conditions['select']);
+        } else {
+            $query->select([
+                'questionnaires.*',
+            ]);
+        }
+    }
+
     private function getQuestionnairesQueryFilters(Builder $query, ?array $conditions): void
     {
         if (isset($conditions['search'])) {
@@ -67,7 +80,7 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
     private function getQuestionnairesQueryOrderBy(Builder $query, ?array $conditions): void
     {
         $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
-        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'updated_at';
+        $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'questionnaires.updated_at';
 
         $query->orderBy($order_by, $order);
     }
