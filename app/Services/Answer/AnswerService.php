@@ -15,21 +15,17 @@ class AnswerService
 
     public function getUserAnswers(array $questionnaire_ids, int $user_id): array
     {
-        $user_answers = [];
-
-        if (auth()->check()) {
-            $user_answers = $this->answerRepository->getAnswers(0, [
-                'questionnaire_ids' => $questionnaire_ids,
-                'user_id' => $user_id,
-                'select' => [
-                    'answers.questionnaire_id',
-                ],
-                'distinct' => true,
-                'no_order_by' => true,
-            ])->pluck('questionnaire_id')->all();
-        }
-
-        return $user_answers;
+        return $this->answerRepository->getAnswers(0, [
+            'questionnaire_ids' => $questionnaire_ids,
+            'user_id' => $user_id,
+            'select' => [
+                'answers.questionnaire_id',
+            ],
+            'distinct' => true,
+            'no_order_by' => true,
+        ])
+            ->pluck('questionnaire_id')
+            ->all();
     }
 
     public function isAnswered(int $user_id, int $questionnaire_id): bool

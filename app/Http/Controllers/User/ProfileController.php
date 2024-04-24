@@ -37,7 +37,7 @@ class ProfileController extends Controller
     {
         $this->userRepository->updateUser($request->user(), $request->validated());
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('user.profile.edit');
     }
 
     /**

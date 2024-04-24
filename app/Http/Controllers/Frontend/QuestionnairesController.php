@@ -30,7 +30,9 @@ class QuestionnairesController extends Controller
         $questionnaires = $this->questionnaireRepository->getQuestionnaires(30, $request->validated());
         $questionnaire_resources = QuestionnaireResource::collection($questionnaires);
         $queryParams = $request->validated() ?: null;
-        $userAnswers = $this->answerService->getUserAnswers($questionnaires->pluck('id')->all(), auth()->user()->id);
+        $userAnswers = auth()->check()
+            ? $this->answerService->getUserAnswers($questionnaires->pluck('id')->all(), auth()->user()->id)
+            : [];
 
         return Inertia::render('Frontend/Questionnaires/Index', [
             'questionnaires' => $questionnaire_resources,

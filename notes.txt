@@ -23,12 +23,12 @@ TO DO: Quiz App Roadmap
     - User Answered Exams
         - View Result: *** PENDING ***
 -----------------
-- Frontend: ***NEXT STEP***
+- Frontend
     - Menus Exam
     - Answer questions
     - Front home page leader board
 -----------------
-- Testing
+- Testing: ***NEXT STEP***
 -----------------
 - Documentation
 =============================
