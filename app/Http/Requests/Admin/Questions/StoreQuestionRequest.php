@@ -31,6 +31,7 @@ class StoreQuestionRequest extends FormRequest
 
     public function prepareForInsert(int $questionnaire_id): array
     {
+        #TODO: Transfer to service
         $max_priority = Question::where('questionnaire_id', $questionnaire_id)->max('priority');
 
         return $this->safe()

@@ -1,6 +1,6 @@
 <?php
 
-it('returns a successful response', function () {
+it('display the index', function () {
     $response = $this->get('/');
 
     $response->assertStatus(200);
