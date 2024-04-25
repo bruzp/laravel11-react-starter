@@ -8,15 +8,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response as InertiaResponse;
 use App\Http\Resources\Admin\QuestionnaireResource;
+use App\Interfaces\Question\QuestionRepositoryInterface;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
 use App\Http\Requests\Admin\Questionnaires\StoreQuestionnaireRequest;
+use App\Http\Requests\Admin\Questions\UpdateQuestionsPriorityRequest;
 use App\Http\Requests\Admin\Questionnaires\UpdateQuestionnaireRequest;
 use App\Http\Requests\Admin\Questionnaires\SearchQuestionnairesRequest;
 
 class QuestionnairesController extends Controller
 {
-    public function __construct(private QuestionnaireRepositoryInterface $questionnaireRepository)
-    {
+    public function __construct(
+        private QuestionnaireRepositoryInterface $questionnaireRepository,
+        private QuestionRepositoryInterface $questionRepository
+    ) {
     }
 
     public function index(SearchQuestionnairesRequest $request): InertiaResponse
@@ -70,6 +74,34 @@ class QuestionnairesController extends Controller
 
         return redirect()
             ->route('admin.questionnaires.index')
+            ->with('status', 'Success!');
+    }
+
+    public function reindex(Questionnaire $questionnaire): InertiaResponse
+    {
+        $questionnaire->loadMissing([
+            'questions' => fn($query) =>
+                $query->select([
+                    'id',
+                    'questionnaire_id',
+                    'question',
+                    'priority',
+                ])
+                    ->orderBy('priority')
+        ]);
+
+        return Inertia::render('Admin/Questions/ReIndexQuestions', [
+            'questionnaire' => $questionnaire,
+            'status' => session('status'),
+        ]);
+    }
+
+    public function updatePriority(Questionnaire $questionnaire, UpdateQuestionsPriorityRequest $request): RedirectResponse
+    {
+        $this->questionRepository->updateQuestionsPriority($request->safe()->question_ids);
+
+        return redirect()
+            ->route('admin.questionnaires.reindex', $questionnaire->id, 303)
             ->with('status', 'Success!');
     }
 }

@@ -27,7 +27,7 @@ export default function ReIndexQuestions({ auth, questionnaire, status }) {
   };
 
   const handleUpdate = () => {
-    put(route("admin.questions.update.priority", questionnaire));
+    put(route("admin.questionnaires.update.priority", questionnaire));
   };
 
   const prepareData = () => {

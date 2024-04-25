@@ -19,7 +19,7 @@ class QuestionnaireFactory extends Factory
     public function definition(): array
     {
         return [
-            'admin_id' => Admin::factory(),
+            'admin_id' => Admin::first() ?: Admin::factory(),
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
         ];

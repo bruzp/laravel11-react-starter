@@ -47,6 +47,9 @@ Route::middleware('auth.admin')->group(function () {
             Route::put('{questionnaire}', [QuestionnairesController::class, 'update'])->name('update');
 
             Route::delete('{questionnaire}', [QuestionnairesController::class, 'destroy'])->name('destroy');
+
+            Route::get('reindex/{questionnaire}', [QuestionnairesController::class, 'reindex'])->name('reindex');
+            Route::put('update/priority/{questionnaire}', [QuestionnairesController::class, 'updatePriority'])->name('update.priority');
         });
     });
 
@@ -57,9 +60,6 @@ Route::middleware('auth.admin')->group(function () {
             Route::put('{question}', [QuestionsController::class, 'update'])->name('update');
 
             Route::delete('{question}', [QuestionsController::class, 'destroy'])->name('destroy');
-
-            Route::get('reindex/{questionnaire}', [QuestionsController::class, 'reindex'])->name('reindex');
-            Route::put('update/priority/{questionnaire}', [QuestionsController::class, 'updatePriority'])->name('update.priority');
         });
     });
 

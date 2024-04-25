@@ -17,7 +17,7 @@ class AnswerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'result' => rand(0, 100),
         ];
     }
 }

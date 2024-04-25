@@ -28,16 +28,27 @@ TO DO: Quiz App Roadmap
     - Answer questions
     - Front home page leader board
 -----------------
-- Testing: ***NEXT STEP***
-    - Admin Side
+- Testing
 -----------------
 - Documentation
     - Sharing Notes
 =============================
 
-Improvements
+Improvements: ***NEXT STEP***
 - Repository functions "paginate"
 - DB Indexing
 - reduce the data that can viewed in dev tools
 - add return type to the interfaces
 - check TODOs
+- optimize functions repeating on tests
+
+**********************************
+Testing Notes
+Test all
+php artisan test
+
+File Test
+php artisan test tests\Feature\Admin\QuestionnaireTest.php
+
+Specific Test
+php artisan test tests\Feature\Admin\QuestionnaireTest.php --filter="admin can update questions priority"
