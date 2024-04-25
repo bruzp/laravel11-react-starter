@@ -34,11 +34,6 @@ TO DO: Quiz App Roadmap
     - Sharing Notes
 =============================
 
-Improvements: ***NEXT STEP***
-- DB Indexing
-- reduce the data that can viewed in dev tools
-- optimize functions repeating on tests
-
 **********************************
 Testing Notes
 Test all

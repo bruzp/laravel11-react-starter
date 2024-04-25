@@ -3,32 +3,31 @@
 use App\Models\User;
 use App\Models\Admin;
 
-test('admin users can be displayed', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
+beforeEach(function () {
+    $this->admin = Admin::first() ?: Admin::factory()->create();
+});
 
+test('admin users can be displayed', function () {
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.users.index'));
 
     $response->assertOk();
 });
 
 test('admin user registration screen can be rendered', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
-
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.users.create'));
 
     $response->assertOk();
 });
 
 test('admin can add user', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $email = fake()->email();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->post(route('admin.users.store'), [
             'name' => fake()->name(),
             'email' => $email,
@@ -44,24 +43,22 @@ test('admin can add user', function () {
 });
 
 test('admin user edit screen can be rendered', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $user = User::factory()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.users.edit', $user));
 
     $response->assertOk();
 });
 
 test('admin can update user', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $user = User::factory()->create();
     $name = fake()->name();
     $email = fake()->email();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->put(route('admin.users.update', $user), [
             'id' => $user->id,
             'name' => $name,
@@ -81,11 +78,10 @@ test('admin can update user', function () {
 });
 
 test('admin can delete user', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $user = User::factory()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->delete(route('admin.users.destroy', $user));
 
     $response->assertRedirect(route('admin.users.index'));

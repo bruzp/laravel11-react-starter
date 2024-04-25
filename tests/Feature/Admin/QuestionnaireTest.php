@@ -3,33 +3,32 @@
 use App\Models\Admin;
 use App\Models\Questionnaire;
 
-test('admin questionnaires can be displayed', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
+beforeEach(function () {
+    $this->admin = Admin::first() ?: Admin::factory()->create();
+});
 
+test('admin questionnaires can be displayed', function () {
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.questionnaires.index'));
 
     $response->assertOk();
 });
 
 test('admin questionnaire registration screen can be rendered', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
-
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.questionnaires.create'));
 
     $response->assertOk();
 });
 
 test('admin can add questionnaire', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $title = fake()->sentence();
     $description = fake()->paragraph();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->post(route('admin.questionnaires.store'), [
             'title' => $title,
             'description' => $description,
@@ -46,24 +45,22 @@ test('admin can add questionnaire', function () {
 });
 
 test('admin questionnaire edit screen can be rendered', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.questionnaires.edit', $questionnaire));
 
     $response->assertOk();
 });
 
 test('admin can update questionnaire', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->create();
     $title = fake()->sentence();
     $description = fake()->paragraph();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->put(route('admin.questionnaires.update', $questionnaire), [
             'title' => $title,
             'description' => $description,
@@ -80,11 +77,10 @@ test('admin can update questionnaire', function () {
 });
 
 test('admin can delete questionnaire', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->delete(route('admin.questionnaires.destroy', $questionnaire));
 
     $response->assertRedirect(route('admin.questionnaires.index'));
@@ -93,18 +89,16 @@ test('admin can delete questionnaire', function () {
 });
 
 test('admin questionnaire re-index questions screen can be rendered', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->withQuestions()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.questionnaires.reindex', $questionnaire));
 
     $response->assertOk();
 });
 
 test('admin can update questions priority', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->withQuestions()->create();
     $questions = $questionnaire->questions;
     $priority_arr = range(1, $questions->count());
@@ -122,7 +116,7 @@ test('admin can update questions priority', function () {
     }
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->put(route('admin.questionnaires.update.priority', $questionnaire), ['question_ids' => $data]);
 
     $response->assertRedirect(route('admin.questionnaires.reindex', $questionnaire));

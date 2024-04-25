@@ -4,8 +4,11 @@ use App\Models\Admin;
 use App\Models\Question;
 use App\Models\Questionnaire;
 
+beforeEach(function () {
+    $this->admin = Admin::first() ?: Admin::factory()->create();
+});
+
 test('admin can add question', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $questionnaire = Questionnaire::factory()->create();
 
     $choices = [];
@@ -15,7 +18,7 @@ test('admin can add question', function () {
     }
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->post(route('admin.questions.store', $questionnaire), [
             'question' => fake()->sentence(),
             'choices' => $choices,
@@ -28,7 +31,6 @@ test('admin can add question', function () {
 });
 
 test('admin can update question', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $_question = fake()->sentence();
     $question = Question::factory()->withQuestionnaire()->create();
 
@@ -41,7 +43,7 @@ test('admin can update question', function () {
     $answer = array_rand($choices);
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->put(route('admin.questions.update', $question), [
             'question' => $_question,
             'choices' => $choices,
@@ -60,11 +62,10 @@ test('admin can update question', function () {
 });
 
 test('admin can delete question', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $question = Question::factory()->withQuestionnaire()->create();
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->delete(route('admin.questions.destroy', $question));
 
     $response->assertRedirect(route('admin.questionnaires.edit', $question->questionnaire));

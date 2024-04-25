@@ -5,11 +5,13 @@ use App\Models\Admin;
 use App\Models\Answer;
 use App\Models\Questionnaire;
 
-test('admin answers can be displayed', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
+beforeEach(function () {
+    $this->admin = Admin::first() ?: Admin::factory()->create();
+});
 
+test('admin answers can be displayed', function () {
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->get(route('admin.answers.index'));
 
     $response->assertOk();
@@ -17,7 +19,6 @@ test('admin answers can be displayed', function () {
 
 
 test('admin can delete answer', function () {
-    $admin = Admin::first() ?: Admin::factory()->create();
     $user = User::factory()->create();
 
     $questionnaire = Questionnaire::factory()->withQuestions()->create();
@@ -37,7 +38,7 @@ test('admin can delete answer', function () {
     ]);
 
     $response = $this
-        ->actingAs($admin, Admin::GUARD)
+        ->actingAs($this->admin, Admin::GUARD)
         ->delete(route('admin.answers.destroy', $answer));
 
     $response->assertRedirect(route('admin.answers.index'));
