@@ -10,7 +10,7 @@ use App\Interfaces\Answer\AnswerRepositoryInterface;
 
 class AnswerRepository implements AnswerRepositoryInterface
 {
-    public function getAnswers(int $paginate = 0, array $conditions = []): Collection|LengthAwarePaginator
+    public function getAnswers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
     {
         $query = Answer::query()
             ->join('questionnaires', 'questionnaires.id', '=', 'answers.questionnaire_id')

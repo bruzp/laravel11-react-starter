@@ -35,7 +35,6 @@ TO DO: Quiz App Roadmap
 =============================
 
 Improvements: ***NEXT STEP***
-- Repository functions "paginate"
 - DB Indexing
 - reduce the data that can viewed in dev tools
 - optimize functions repeating on tests

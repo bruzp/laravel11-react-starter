@@ -10,7 +10,7 @@ use App\Interfaces\UserAnswerRanking\UserAnswerRankingRepositoryInterface;
 
 class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterface
 {
-    public function getUserAnswerRankings(int $paginate = 0, array $conditions = []): Collection|LengthAwarePaginator
+    public function getUserAnswerRankings(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
     {
         $query = UserAnswerRanking::query();
 

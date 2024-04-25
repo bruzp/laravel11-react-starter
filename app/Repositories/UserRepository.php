@@ -10,7 +10,7 @@ use App\Interfaces\User\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getUsers(int $paginate = 0, array $conditions = []): Collection|LengthAwarePaginator
+    public function getUsers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
     {
         $query = User::query();
 

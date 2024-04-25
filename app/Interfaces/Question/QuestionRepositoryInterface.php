@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface QuestionRepositoryInterface
 {
-    public function getQuestions(int $paginate, array $conditions = []): Collection|LengthAwarePaginator;
+    public function getQuestions(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
     public function findQuestionById(int $id): ?Question;
 

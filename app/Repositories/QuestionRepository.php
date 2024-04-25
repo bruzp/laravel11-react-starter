@@ -11,7 +11,7 @@ use App\Interfaces\Question\QuestionRepositoryInterface;
 
 class QuestionRepository implements QuestionRepositoryInterface
 {
-    public function getQuestions(int $paginate, array $conditions = []): Collection|LengthAwarePaginator
+    public function getQuestions(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
     {
         $query = Question::query();
 

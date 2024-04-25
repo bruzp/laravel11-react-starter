@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function index(): InertiaResponse
     {
         return Inertia::render('Admin/Dashboard', [
-            'top10_users' => $this->answerRepository->getAnswers(0, [
+            'top10_users' => $this->answerRepository->getAnswers([
                 'select' => [
                     'answers.id',
                     'users.name',

@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface UserRepositoryInterface
 {
-    public function getUsers(int $paginate, array $conditions = []): Collection|LengthAwarePaginator;
+    public function getUsers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
     public function findUserById(int $id): ?User;
 

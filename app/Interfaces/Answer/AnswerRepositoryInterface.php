@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface AnswerRepositoryInterface
 {
-    public function getAnswers(int $paginate, array $conditions = []): Collection|LengthAwarePaginator;
+    public function getAnswers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
     public function findAnswer(array $conditions): ?Answer;
 

@@ -15,7 +15,7 @@ class AnswerService
 
     public function getUserAnswers(array $questionnaire_ids, int $user_id): array
     {
-        return $this->answerRepository->getAnswers(0, [
+        return $this->answerRepository->getAnswers([
             'questionnaire_ids' => $questionnaire_ids,
             'user_id' => $user_id,
             'select' => [
