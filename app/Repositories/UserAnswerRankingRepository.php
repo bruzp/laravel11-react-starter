@@ -29,7 +29,7 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
             : $query->get();
     }
 
-    public function findUserAnswerRankingByUserId(int $user_id): UserAnswerRanking
+    public function findUserAnswerRankingByUserId(int $user_id): ?UserAnswerRanking
     {
         return UserAnswerRanking::query()
             ->where('user_id', $user_id)

@@ -3,16 +3,18 @@
 namespace App\Interfaces\Questionnaire;
 
 use App\Models\Questionnaire;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface QuestionnaireRepositoryInterface
 {
-    public function getQuestionnaires(int $paginate, array $conditions = []);
+    public function getQuestionnaires(int $paginate, array $conditions = []): Collection|LengthAwarePaginator;
 
-    public function findQuestionnaireById(int $id);
+    public function findQuestionnaireById(int $id): ?Questionnaire;
 
-    public function storeQuestionnaire(array $data);
+    public function storeQuestionnaire(array $data): Questionnaire;
 
-    public function updateQuestionnaire(Questionnaire $questionnaire, array $data);
+    public function updateQuestionnaire(Questionnaire $questionnaire, array $data): void;
 
-    public function deleteQuestionnaire(Questionnaire $questionnaire);
+    public function deleteQuestionnaire(Questionnaire $questionnaire): void;
 }
