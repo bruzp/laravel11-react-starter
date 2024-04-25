@@ -6,10 +6,12 @@ This Quiz Application is built using Laravel with Inertia.js and React. It enabl
 ## Features
 
 ### Admin Side
+
 - **Dashboard:** Upon login, the admin is presented with the top 10 highest-scoring users across all exams.
 - **Management Tools:** Admins can manage questionnaires, answers, and user accounts.
 
 ### User Side
+
 - **Dashboard:** Users are shown their overall standings upon login.
 - **Exam Access:** Users have access to their previously answered questionnaires but can take any exam only once.
 
@@ -18,31 +20,44 @@ This Quiz Application is built using Laravel with Inertia.js and React. It enabl
 Follow these steps to get the application running on your local machine:
 
 1. Clone the repository:
+
    ```
    git clone <repository-url>
    ```
+
 2. Install PHP dependencies:
+
    ```
    composer install
    ```
+
 3. Install NPM packages:
+
    ```
    npm install
    ```
+
 4. Generate application key:
+
    ```
    php artisan key:generate
    ```
+
 5. Set up database credentials in your `.env` file.
 6. Run migrations and seed the database:
+
    ```
    php artisan migrate --seed
    ```
+
 7. Start the Laravel server:
+
    ```
    php artisan serve
    ```
+
 8. Compile React components and watch for changes:
+
    ```
    npm run dev
    ```
@@ -50,12 +65,32 @@ Follow these steps to get the application running on your local machine:
 ## Access Credentials
 
 - **Admin Access:**
-  - Email: admin@test.com
+  - Email: <admin@test.com>
   - Password: password
 
 - **User Access:**
   - Email: Check the users table in your database for user credentials.
   - Password: password
+
+## Testing Notes
+
+- **Test all**
+
+  ```
+  php artisan test
+  ```
+
+- **File Test**
+
+  ```
+  php artisan test tests\Feature\Admin\QuestionnaireTest.php
+  ```
+
+- **Specific Test**
+
+  ```
+  php artisan test tests\Feature\Admin\QuestionnaireTest.php --filter="admin can update questions priority"
+  ```
 
 ## Project Background
 
