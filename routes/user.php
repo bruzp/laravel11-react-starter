@@ -15,9 +15,6 @@ Route::middleware('auth')->group(function () {
     Route::prefix('answers')->group(function () {
         Route::name('answers.')->group(function () {
             Route::get('/', [AnswerController::class, 'index'])->name('index');
-
-            #TODO: Implement function.
-            Route::delete('{answer}', [AnswerController::class, 'destroy'])->name('destroy');
         });
     });
 

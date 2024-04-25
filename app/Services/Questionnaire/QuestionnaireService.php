@@ -9,7 +9,7 @@ class QuestionnaireService
     /**
      * Check exam and return score by percentage of total.
      */
-    public static function checkExam(array $answers, Collection $questions): int
+    public function checkExam(array $answers, Collection $questions): int
     {
         $score = 0;
         $total = $questions->count();

@@ -2,11 +2,15 @@
 
 namespace App\Http\Requests\Admin\Questions;
 
-use App\Models\Question;
+use App\Services\Question\QuestionSerivce;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreQuestionRequest extends FormRequest
 {
+    public function __construct(private QuestionSerivce $questionSerivce)
+    {
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -31,13 +35,10 @@ class StoreQuestionRequest extends FormRequest
 
     public function prepareForInsert(int $questionnaire_id): array
     {
-        #TODO: Transfer to service
-        $max_priority = Question::where('questionnaire_id', $questionnaire_id)->max('priority');
-
         return $this->safe()
             ->merge([
                 'questionnaire_id' => $questionnaire_id,
-                'priority' => $max_priority ? $max_priority + 1 : 1,
+                'priority' => $this->questionSerivce->getMaxPriority($questionnaire_id),
                 'choices' => serialize($this->safe()->choices),
             ])
             ->toArray();

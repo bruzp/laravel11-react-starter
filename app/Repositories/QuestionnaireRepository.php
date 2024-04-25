@@ -44,7 +44,6 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
 
     public function deleteQuestionnaire(Questionnaire $questionnaire): void
     {
-        #TODO: test
         $questionnaire->questions()->update([
             'deleted_at' => now()
         ]);

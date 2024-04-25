@@ -39,7 +39,6 @@ Improvements: ***NEXT STEP***
 - DB Indexing
 - reduce the data that can viewed in dev tools
 - add return type to the interfaces
-- check TODOs
 - optimize functions repeating on tests
 
 **********************************

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Helpers\Question;
+namespace App\Services\Question;
 
 use App\Models\Question;
 
-class QuestionHelper
+class QuestionSerivce
 {
-    public static function prepareDataForUpdatingPriority(int $questionnaire_id): array
+    public function prepareDataForUpdatingPriority(int $questionnaire_id): array
     {
         $questions = Question::query()
             ->select('id')
@@ -25,5 +25,12 @@ class QuestionHelper
         }
 
         return $data;
+    }
+
+    public function getMaxPriority(int $questionnaire_id): int
+    {
+        $max_priority = Question::where('questionnaire_id', $questionnaire_id)->max('priority');
+
+        return $max_priority ? $max_priority + 1 : 1;
     }
 }
