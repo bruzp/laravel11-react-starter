@@ -25,6 +25,15 @@ class UserRepository implements UserRepositoryInterface
             : $query->get();
     }
 
+    public function findUser(array $conditions): ?User
+    {
+        $query = User::query();
+
+        $this->getUsersQueryFilters($query, $conditions);
+
+        return $query->first();
+    }
+
     public function findUserById(int $id): ?User
     {
         return User::find($id);

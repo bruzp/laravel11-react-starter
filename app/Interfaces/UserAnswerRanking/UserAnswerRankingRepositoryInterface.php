@@ -10,5 +10,7 @@ interface UserAnswerRankingRepositoryInterface
 {
     public function getUserAnswerRankings(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
+    public function findUserAnswerRanking(array $conditions): ?UserAnswerRanking;
+
     public function findUserAnswerRankingByUserId(int $user_id): ?UserAnswerRanking;
 }

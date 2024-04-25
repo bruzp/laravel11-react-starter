@@ -29,6 +29,15 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
             : $query->get();
     }
 
+    public function findUserAnswerRanking(array $conditions): ?UserAnswerRanking
+    {
+        $query = UserAnswerRanking::query();
+
+        $this->getUserAnswerRankingsQueryFilters($query, $conditions);
+
+        return $query->first();
+    }
+
     public function findUserAnswerRankingByUserId(int $user_id): ?UserAnswerRanking
     {
         return UserAnswerRanking::query()

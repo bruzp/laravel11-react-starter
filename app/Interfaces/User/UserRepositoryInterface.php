@@ -10,6 +10,8 @@ interface UserRepositoryInterface
 {
     public function getUsers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
+    public function findUser(array $conditions): ?User;
+
     public function findUserById(int $id): ?User;
 
     public function storeUser(array $data): User;

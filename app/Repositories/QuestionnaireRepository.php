@@ -25,6 +25,15 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
             : $query->get();
     }
 
+    public function findQuestionnaire(array $conditions): ?Questionnaire
+    {
+        $query = Questionnaire::query();
+
+        $this->getQuestionnairesQueryFilters($query, $conditions);
+
+        return $query->first();
+    }
+
     public function findQuestionnaireById(int $id): ?Questionnaire
     {
         return Questionnaire::find($id);

@@ -10,6 +10,8 @@ interface QuestionRepositoryInterface
 {
     public function getQuestions(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
 
+    public function findQuestion(array $conditions): ?Question;
+
     public function findQuestionById(int $id): ?Question;
 
     public function storeQuestion(array $data): Question;

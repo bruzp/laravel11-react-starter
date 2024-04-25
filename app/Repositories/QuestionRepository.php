@@ -26,6 +26,15 @@ class QuestionRepository implements QuestionRepositoryInterface
             : $query->get();
     }
 
+    public function findQuestion(array $conditions): ?Question
+    {
+        $query = Question::query();
+
+        $this->getQuestionsQueryFilters($query, $conditions);
+
+        return $query->first();
+    }
+
     public function findQuestionById(int $id): ?Question
     {
         return Question::find($id);
