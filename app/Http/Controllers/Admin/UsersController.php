@@ -21,8 +21,11 @@ class UsersController extends Controller
 
     public function index(SearchUsersRequest $request): InertiaResponse
     {
+        $users = $this->userRepository->getUsers($request->validated(), 30);
+        $user_resouces = UserResource::collection($users);
+
         return Inertia::render('Admin/Users/Index', [
-            'users' => UserResource::collection($this->userRepository->getUsers($request->validated(), 30)),
+            'users' => $user_resouces,
             'status' => session('status'),
             'query_params' => $request->validated() ?: null,
         ]);

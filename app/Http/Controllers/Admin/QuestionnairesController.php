@@ -25,8 +25,11 @@ class QuestionnairesController extends Controller
 
     public function index(SearchQuestionnairesRequest $request): InertiaResponse
     {
+        $questionnaires = $this->questionnaireRepository->getQuestionnaires($request->validated(), 30);
+        $questionnaire_resources = QuestionnaireResource::collection($questionnaires);
+
         return Inertia::render('Admin/Questionnaires/Index', [
-            'questionnaires' => QuestionnaireResource::collection($this->questionnaireRepository->getQuestionnaires($request->validated(), 30)),
+            'questionnaires' => $questionnaire_resources,
             'status' => session('status'),
             'query_params' => $request->validated() ?: null,
         ]);

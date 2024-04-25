@@ -19,8 +19,11 @@ class AnswerController extends Controller
 
     public function index(SearchAnswersRequest $request): InertiaResponse
     {
+        $answers = $this->answerRepository->getAnswers($request->validated(), 30);
+        $answer_resources = AnswerResource::collection($answers);
+
         return Inertia::render('Admin/Answer/Index', [
-            'answers' => AnswerResource::collection($this->answerRepository->getAnswers($request->validated(), 30)),
+            'answers' => $answer_resources,
             'status' => session('status'),
             'query_params' => $request->validated() ?: null,
         ]);
