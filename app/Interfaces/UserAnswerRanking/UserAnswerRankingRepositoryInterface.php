@@ -2,6 +2,7 @@
 
 namespace App\Interfaces\UserAnswerRanking;
 
+use App\Models\UserAnswerRanking;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
