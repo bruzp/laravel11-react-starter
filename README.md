@@ -3,6 +3,12 @@
 
 This Quiz Application is built using Laravel with Inertia.js and React. It enables the administration of quizzes and allows users to take exams. The application differentiates between two types of entities: admins and users.
 
+## Version Compatibility
+
+- **Laravel:** 11
+- **PHP:** 8.3.6
+- **MySQL:** 8.0.30
+
 ## Features
 
 ### Admin Side
