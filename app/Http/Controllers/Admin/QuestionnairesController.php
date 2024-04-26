@@ -82,6 +82,7 @@ class QuestionnairesController extends Controller
 
     public function reindex(Questionnaire $questionnaire): InertiaResponse
     {
+        #TODO: remove order by, move to repository
         $questionnaire->loadMissing([
             'questions' => fn($query) =>
                 $query->select([

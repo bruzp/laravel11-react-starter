@@ -98,6 +98,7 @@ class QuestionRepository implements QuestionRepositoryInterface
 
     private function getQuestionsQueryOrderBy(Builder $query, ?array $conditions): void
     {
+        #TODO: change to ASC order
         $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'questions.priority';
 
