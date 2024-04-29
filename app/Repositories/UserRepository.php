@@ -73,11 +73,27 @@ class UserRepository implements UserRepositoryInterface
 
     private function getUsersQueryFilters(Builder $query, ?array $conditions): void
     {
-        if (isset($conditions['search'])) {
-            $query->where(function (Builder $query) use ($conditions) {
-                $query->whereLike('name', $conditions['search'])
-                    ->orWhereLike('email', $conditions['search']);
-            });
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, config('define.repository_skip_filters'))) {
+                continue;
+            }
+
+            if (empty($value)) {
+                continue;
+            }
+
+            switch ($key) {
+                case 'search':
+                    $query->where(function (Builder $query) use ($conditions) {
+                        $query->whereLike('name', $conditions['search'])
+                            ->orWhereLike('email', $conditions['search']);
+                    });
+                    break;
+
+                default:
+                    $query->where($key, $value);
+                    break;
+            }
         }
     }
 

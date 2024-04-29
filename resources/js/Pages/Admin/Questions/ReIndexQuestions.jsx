@@ -4,22 +4,27 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function ReIndexQuestions({ auth, questionnaire, status }) {
-  const [questions, setQuestions] = useState(questionnaire.questions);
+export default function ReIndexQuestions({
+  auth,
+  questionnaire,
+  questions,
+  status,
+}) {
+  const [_questions, setQuestions] = useState(questions);
   const { data, setData, put, processing } = useForm({});
 
   useEffect(() => {
-    setQuestions(questionnaire.questions);
+    setQuestions(questions);
   }, [questionnaire]);
 
   useEffect(() => {
     prepareData();
-  }, [questions]);
+  }, [_questions]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(questions);
+    const items = Array.from(_questions);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
@@ -31,7 +36,7 @@ export default function ReIndexQuestions({ auth, questionnaire, status }) {
   };
 
   const prepareData = () => {
-    const newData = questions.map((obj, index) => ({
+    const newData = _questions.map((obj, index) => ({
       id: obj.id,
       priority: index + 1,
     }));
@@ -78,7 +83,7 @@ export default function ReIndexQuestions({ auth, questionnaire, status }) {
                           </tr>
                         </thead>
                         <tbody>
-                          {questions.map((row, index) => (
+                          {_questions.map((row, index) => (
                             <Draggable
                               key={row.id.toString()}
                               draggableId={row.id.toString()}

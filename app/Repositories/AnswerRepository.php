@@ -78,29 +78,37 @@ class AnswerRepository implements AnswerRepositoryInterface
 
     private function getAnswersQueryFilters(Builder $query, ?array $conditions): void
     {
-        if (isset($conditions['search'])) {
-            $query->where(function (Builder $query) use ($conditions) {
-                $query->whereLike('name', $conditions['search'])
-                    ->orWhereLike('email', $conditions['search'])
-                    ->orWhereLike('title', $conditions['search'])
-                    ->orWhereLike('description', $conditions['search']);
-            });
-        }
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, config('define.repository_skip_filters'))) {
+                continue;
+            }
 
-        if (isset($conditions['user_id'])) {
-            $query->where('user_id', $conditions['user_id']);
-        }
+            if (empty($value)) {
+                continue;
+            }
 
-        if (isset($conditions['questionnaire_id'])) {
-            $query->where('questionnaire_id', $conditions['questionnaire_id']);
-        }
+            switch ($key) {
+                case 'search':
+                    $query->where(function (Builder $query) use ($conditions) {
+                        $query->whereLike('name', $conditions['search'])
+                            ->orWhereLike('email', $conditions['search'])
+                            ->orWhereLike('title', $conditions['search'])
+                            ->orWhereLike('description', $conditions['search']);
+                    });
+                    break;
 
-        if (isset($conditions['questionnaire_ids'])) {
-            $query->whereIntegerInRaw('questionnaire_id', $conditions['questionnaire_ids']);
-        }
+                case 'questionnaire_ids':
+                    $query->whereIntegerInRaw('questionnaire_id', $conditions['questionnaire_ids']);
+                    break;
 
-        if (isset($conditions['distinct'])) {
-            $query->distinct();
+                case 'distinct':
+                    $query->distinct();
+                    break;
+
+                default:
+                    $query->where($key, $value);
+                    break;
+            }
         }
     }
 

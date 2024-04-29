@@ -85,21 +85,32 @@ class QuestionRepository implements QuestionRepositoryInterface
 
     private function getQuestionsQueryFilters(Builder $query, ?array $conditions): void
     {
-        if (isset($conditions['search'])) {
-            $query->where(function (Builder $query) use ($conditions) {
-                $query->whereLike('question', $conditions['search']);
-            });
-        }
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, config('define.repository_skip_filters'))) {
+                continue;
+            }
 
-        if (isset($conditions['questionnaire_id'])) {
-            $query->where('questionnaire_id', $conditions['questionnaire_id']);
+            if (empty($value)) {
+                continue;
+            }
+
+            switch ($key) {
+                case 'search':
+                    $query->where(function (Builder $query) use ($conditions) {
+                        $query->whereLike('question', $conditions['search']);
+                    });
+                    break;
+
+                default:
+                    $query->where($key, $value);
+                    break;
+            }
         }
     }
 
     private function getQuestionsQueryOrderBy(Builder $query, ?array $conditions): void
     {
-        #TODO: change to ASC order
-        $order = isset($conditions['order']) ? $conditions['order'] : 'DESC';
+        $order = isset($conditions['order']) ? $conditions['order'] : 'ASC';
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'questions.priority';
 
         $query->orderBy($order_by, $order);

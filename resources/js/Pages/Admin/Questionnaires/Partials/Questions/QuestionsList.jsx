@@ -8,6 +8,7 @@ import QuestionsEdit from "./QuestionsEdit";
 export default function QuestionsList({
   className = "",
   questionnaire,
+  questions,
   status,
 }) {
   const [sort, setSort] = useState({
@@ -15,7 +16,6 @@ export default function QuestionsList({
     order_by: "priority",
   });
 
-  const questions = questionnaire.questions;
   const [filtered_questions, setFilteredQuestions] = useState([]);
   const [search, setSearch] = useState("");
 

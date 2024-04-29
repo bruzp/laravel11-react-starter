@@ -73,15 +73,27 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
 
     private function getQuestionnairesQueryFilters(Builder $query, ?array $conditions): void
     {
-        if (isset($conditions['search'])) {
-            $query->where(function (Builder $query) use ($conditions) {
-                $query->whereLike('title', $conditions['search'])
-                    ->orWhereLike('description', $conditions['search']);
-            });
-        }
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, config('define.repository_skip_filters'))) {
+                continue;
+            }
 
-        if (isset($conditions['admin_id'])) {
-            $query->where('admin_id', $conditions['admin_id']);
+            if (empty($value)) {
+                continue;
+            }
+
+            switch ($key) {
+                case 'search':
+                    $query->where(function (Builder $query) use ($conditions) {
+                        $query->whereLike('title', $conditions['search'])
+                            ->orWhereLike('description', $conditions['search']);
+                    });
+                    break;
+
+                default:
+                    $query->where($key, $value);
+                    break;
+            }
         }
     }
 

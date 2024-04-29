@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use App\Services\Answer\AnswerService;
 use Inertia\Response as InertiaResponse;
+use App\Http\Resources\User\QuestionResource;
 use App\Http\Resources\User\QuestionnaireResource;
 use App\Interfaces\Answer\AnswerRepositoryInterface;
+use App\Interfaces\Question\QuestionRepositoryInterface;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
 use App\Http\Requests\Frontend\Questionnaires\StoreQuestionnairesRequest;
 use App\Http\Requests\Frontend\Questionnaires\SearchQuestionnairesRequest;
@@ -22,6 +24,7 @@ class QuestionnairesController extends Controller
         private QuestionnaireRepositoryInterface $questionnaireRepository,
         private AnswerRepositoryInterface $answerRepository,
         private AnswerService $answerService,
+        private QuestionRepositoryInterface $questionRepository,
     ) {
     }
 
@@ -46,13 +49,17 @@ class QuestionnairesController extends Controller
      */
     public function create(Questionnaire $questionnaire): InertiaResponse
     {
-        Gate::authorize('takeExam', $questionnaire);
+        Gate::authorize('create', $questionnaire);
 
-        $questionnaire->loadMissing('questions');
         $questionnaire_resource = QuestionnaireResource::make($questionnaire);
+        $questions = $this->questionRepository->getQuestions([
+            'questionnaire_id' => $questionnaire->id,
+        ]);
+        $questions_resource = QuestionResource::collection($questions);
 
         return Inertia::render('Frontend/Questionnaires/Create/CreateIndex', [
             'questionnaire' => $questionnaire_resource,
+            'questions' => $questions_resource,
             'status' => session('status'),
         ]);
     }
@@ -62,9 +69,7 @@ class QuestionnairesController extends Controller
      */
     public function store(Questionnaire $questionnaire, StoreQuestionnairesRequest $request): RedirectResponse
     {
-        Gate::authorize('takeExam', $questionnaire);
-
-        $questionnaire->loadMissing('questions');
+        Gate::authorize('create', $questionnaire);
 
         $data = $request->prepareForInsert($questionnaire);
 

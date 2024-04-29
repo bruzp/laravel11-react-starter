@@ -47,9 +47,20 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
 
     private function getUserAnswerRankingsQueryFilters(Builder $query, ?array $conditions): void
     {
+        foreach ($conditions as $key => $value) {
+            if (in_array($key, config('define.repository_skip_filters'))) {
+                continue;
+            }
 
-        if (isset($conditions['user_id'])) {
-            $query->where('user_id', $conditions['user_id']);
+            if (empty($value)) {
+                continue;
+            }
+
+            switch ($key) {
+                default:
+                    $query->where($key, $value);
+                    break;
+            }
         }
     }
 

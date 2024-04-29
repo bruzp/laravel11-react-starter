@@ -9,6 +9,7 @@ use App\Repositories\QuestionRepository;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\QuestionnaireRepository;
 use App\Interfaces\User\UserRepositoryInterface;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Repositories\UserAnswerRankingRepository;
 use App\Interfaces\Answer\AnswerRepositoryInterface;
 use App\Interfaces\Question\QuestionRepositoryInterface;
@@ -41,5 +42,7 @@ class AppServiceProvider extends ServiceProvider
         Builder::macro('orWhereLike', function ($field, $string) {
             return $string ? $this->orWhere($field, 'like', '%' . $string . '%') : $this;
         });
+
+        JsonResource::withoutWrapping();
     }
 }

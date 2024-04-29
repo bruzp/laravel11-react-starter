@@ -6,6 +6,7 @@ import QuestionnaireEditForm from "./Partials/QuestionnaireEditForm";
 export default function QuestionnaireEdit({
   auth,
   questionnaire,
+  questions,
   status,
   question_status,
 }) {
@@ -34,6 +35,7 @@ export default function QuestionnaireEdit({
             <QuestionsList
               className="max-w-full"
               questionnaire={questionnaire}
+              questions={questions}
               status={question_status}
             />
           </div>

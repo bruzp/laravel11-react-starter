@@ -7,6 +7,7 @@ use App\Models\Questionnaire;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response as InertiaResponse;
+use App\Http\Resources\Admin\QuestionResource;
 use App\Http\Resources\Admin\QuestionnaireResource;
 use App\Interfaces\Question\QuestionRepositoryInterface;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
@@ -19,7 +20,7 @@ class QuestionnairesController extends Controller
 {
     public function __construct(
         private QuestionnaireRepositoryInterface $questionnaireRepository,
-        private QuestionRepositoryInterface $questionRepository
+        private QuestionRepositoryInterface $questionRepository,
     ) {
     }
 
@@ -51,10 +52,15 @@ class QuestionnairesController extends Controller
 
     public function edit(Questionnaire $questionnaire): InertiaResponse
     {
-        $questionnaire->loadMissing('questions');
+        $questionnaire_resource = QuestionnaireResource::make($questionnaire);
+        $questions = $this->questionRepository->getQuestions([
+            'questionnaire_id' => $questionnaire->id,
+        ]);
+        $questions_resource = QuestionResource::collection($questions);
 
         return Inertia::render('Admin/Questionnaires/Edit', [
-            'questionnaire' => QuestionnaireResource::make($questionnaire),
+            'questionnaire' => $questionnaire_resource,
+            'questions' => $questions_resource,
             'status' => session('status'),
             'question_status' => session('question_status'),
         ]);
@@ -82,20 +88,19 @@ class QuestionnairesController extends Controller
 
     public function reindex(Questionnaire $questionnaire): InertiaResponse
     {
-        #TODO: remove order by, move to repository
-        $questionnaire->loadMissing([
-            'questions' => fn($query) =>
-                $query->select([
-                    'id',
-                    'questionnaire_id',
-                    'question',
-                    'priority',
-                ])
-                    ->orderBy('priority')
+        $questions = $this->questionRepository->getQuestions([
+            'questionnaire_id' => $questionnaire->id,
+            'select' => [
+                'id',
+                'questionnaire_id',
+                'question',
+                'priority',
+            ]
         ]);
 
         return Inertia::render('Admin/Questions/ReIndexQuestions', [
             'questionnaire' => $questionnaire,
+            'questions' => $questions,
             'status' => session('status'),
         ]);
     }

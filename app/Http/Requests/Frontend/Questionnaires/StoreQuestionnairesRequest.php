@@ -5,11 +5,14 @@ namespace App\Http\Requests\Frontend\Questionnaires;
 use App\Models\Questionnaire;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Questionnaire\QuestionnaireService;
+use App\Interfaces\Question\QuestionRepositoryInterface;
 
 class StoreQuestionnairesRequest extends FormRequest
 {
-    public function __construct(private QuestionnaireService $questionnaireService)
-    {
+    public function __construct(
+        private QuestionnaireService $questionnaireService,
+        private QuestionRepositoryInterface $questionRepository,
+    ) {
     }
 
     /**
@@ -35,6 +38,10 @@ class StoreQuestionnairesRequest extends FormRequest
 
     public function prepareForInsert(Questionnaire $questionnaire): array
     {
+        $questions = $this->questionRepository->getQuestions([
+            'questionnaire_id' => $questionnaire->id,
+        ]);
+
         return [
             'questionnaire_id' => $questionnaire->id,
             'user_id' => auth()->user()->id,

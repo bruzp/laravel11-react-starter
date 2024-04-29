@@ -48,7 +48,3 @@ php artisan test tests\Feature\Admin\QuestionnaireTest.php --filter="admin can u
 ----------------------------------
 |Total Time Spent Coding = 2 weeks|
 __________________________________
-
-TODO:
-- Resolve the route model binding and eager loading issue
-with repository pattern.
