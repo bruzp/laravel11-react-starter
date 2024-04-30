@@ -6,19 +6,19 @@ use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\Repositories\SetQueryRelationsTrait;
 use App\Interfaces\Question\QuestionRepositoryInterface;
 
 class QuestionRepository implements QuestionRepositoryInterface
 {
-    use SetRelationsTrait;
+    use SetQueryRelationsTrait;
 
     public function getQuestions(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = Question::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getQuestionsQuerySelect($query, $conditions);
 
@@ -35,7 +35,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         $query = Question::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getQuestionsQueryFilters($query, $conditions);
 
@@ -46,7 +46,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         $query = Question::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         return $query->find($id);
     }

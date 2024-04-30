@@ -5,19 +5,19 @@ namespace App\Repositories;
 use App\Models\Questionnaire;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\Repositories\SetQueryRelationsTrait;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
 
 class QuestionnaireRepository implements QuestionnaireRepositoryInterface
 {
-    use SetRelationsTrait;
+    use SetQueryRelationsTrait;
 
     public function getQuestionnaires(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = Questionnaire::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getQuestionnairesQuerySelect($query, $conditions);
 
@@ -34,7 +34,7 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
     {
         $query = Questionnaire::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getQuestionnairesQueryFilters($query, $conditions);
 
@@ -45,7 +45,7 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
     {
         $query = Questionnaire::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         return $query->find($id);
     }

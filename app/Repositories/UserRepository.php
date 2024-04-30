@@ -5,19 +5,19 @@ namespace App\Repositories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\User\UserRepositoryInterface;
+use App\Traits\Repositories\SetQueryRelationsTrait;
 
 class UserRepository implements UserRepositoryInterface
 {
-    use SetRelationsTrait;
+    use SetQueryRelationsTrait;
 
     public function getUsers(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = User::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getUsersQuerySelect($query, $conditions);
 
@@ -34,7 +34,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $query = User::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getUsersQueryFilters($query, $conditions);
 
@@ -45,7 +45,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $query = User::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         return $query->find($id);
     }

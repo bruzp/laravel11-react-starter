@@ -4,9 +4,9 @@ namespace App\Traits\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait SetRelationsTrait
+trait SetQueryRelationsTrait
 {
-    private function setRelations(Builder $query, ?array $relations): void
+    private function setQueryRelations(Builder $query, ?array $relations): void
     {
         if (empty($relations)) {
             return;

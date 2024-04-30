@@ -5,19 +5,20 @@ namespace App\Repositories;
 use App\Models\UserAnswerRanking;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\Repositories\SetRelationsTrait;
+use App\Traits\Repositories\SetQueryLimitTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\Repositories\SetQueryRelationsTrait;
 use App\Interfaces\UserAnswerRanking\UserAnswerRankingRepositoryInterface;
 
 class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterface
 {
-    use SetRelationsTrait;
+    use SetQueryRelationsTrait, SetQueryLimitTrait;
 
     public function getUserAnswerRankings(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = UserAnswerRanking::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getUserAnswerRankingsQuerySelect($query, $conditions);
 
@@ -25,9 +26,7 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
 
         $this->getUserAnswerRankingsQueryOrderBy($query, $conditions);
 
-        if (!$paginate) {
-            $this->getUserAnswerRankingsQueryLimit($query, $conditions);
-        }
+        $this->setQueryLimit($query, $conditions, $paginate);
 
         return $paginate
             ? $query->paginate($paginate)->onEachSide(1)
@@ -38,7 +37,7 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
     {
         $query = UserAnswerRanking::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getUserAnswerRankingsQueryFilters($query, $conditions);
 
@@ -49,7 +48,7 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
     {
         $query = UserAnswerRanking::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         return $query
             ->where('user_id', $user_id)
@@ -81,13 +80,6 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'rank_no';
 
         $query->orderBy($order_by, $order);
-    }
-
-    private function getUserAnswerRankingsQueryLimit(Builder $query, ?array $conditions): void
-    {
-        if (isset($conditions['limit'])) {
-            $query->limit($conditions['limit']);
-        }
     }
 
     private function getUserAnswerRankingsQuerySelect(Builder $query, ?array $conditions): void

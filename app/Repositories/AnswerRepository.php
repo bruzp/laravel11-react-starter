@@ -5,13 +5,14 @@ namespace App\Repositories;
 use App\Models\Answer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\Repositories\SetRelationsTrait;
+use App\Traits\Repositories\SetQueryLimitTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\Repositories\SetQueryRelationsTrait;
 use App\Interfaces\Answer\AnswerRepositoryInterface;
 
 class AnswerRepository implements AnswerRepositoryInterface
 {
-    use SetRelationsTrait;
+    use SetQueryRelationsTrait, SetQueryLimitTrait;
 
     public function getAnswers(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
@@ -19,7 +20,7 @@ class AnswerRepository implements AnswerRepositoryInterface
             ->join('questionnaires', 'questionnaires.id', '=', 'answers.questionnaire_id')
             ->join('users', 'users.id', '=', 'answers.user_id');
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getAnswersQuerySelect($query, $conditions);
 
@@ -27,9 +28,7 @@ class AnswerRepository implements AnswerRepositoryInterface
 
         $this->getAnswersQueryOrderBy($query, $conditions);
 
-        if (!$paginate) {
-            $this->getAnswersQueryLimit($query, $conditions);
-        }
+        $this->setQueryLimit($query, $conditions, $paginate);
 
         return $paginate
             ? $query->paginate($paginate)->onEachSide(1)
@@ -40,7 +39,7 @@ class AnswerRepository implements AnswerRepositoryInterface
     {
         $query = Answer::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         $this->getAnswersQueryFilters($query, $conditions);
 
@@ -51,7 +50,7 @@ class AnswerRepository implements AnswerRepositoryInterface
     {
         $query = Answer::query();
 
-        $this->setRelations($query, $relations);
+        $this->setQueryRelations($query, $relations);
 
         return $query->find($id);
     }
@@ -133,12 +132,5 @@ class AnswerRepository implements AnswerRepositoryInterface
         $order_by = isset($conditions['order_by']) ? $conditions['order_by'] : 'answers.updated_at';
 
         $query->orderBy($order_by, $order);
-    }
-
-    private function getAnswersQueryLimit(Builder $query, ?array $conditions): void
-    {
-        if (isset($conditions['limit'])) {
-            $query->limit($conditions['limit']);
-        }
     }
 }
