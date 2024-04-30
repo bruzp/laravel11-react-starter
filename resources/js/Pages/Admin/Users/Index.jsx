@@ -4,51 +4,97 @@ import Pagination from "@/Components/Pagination";
 import { format } from "date-fns";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
+import { useCallback, useMemo } from "react";
 
-export default function UsersIndex({
-  auth,
-  users,
-  status,
-  query_params = null,
-}) {
+export default function UsersIndex({ auth, users, status, query_params = {} }) {
   query_params = query_params || {};
 
-  const destroy = (id, name) => {
-    router.delete(route("admin.users.destroy", id), {
-      onBefore: () =>
-        confirm("Are you sure you want to delete this user {" + name + "}?"),
-    });
-  };
-
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      query_params[name] = value;
-    } else {
-      delete query_params[name];
+  const destroy = useCallback((id, name) => {
+    if (confirm(`Are you sure you want to delete this user ${name}?`)) {
+      router.delete(route("admin.users.destroy", id));
     }
+  }, []);
 
-    router.get(route("admin.users.index"), query_params);
-  };
+  /* Immutability Principle */
+  const searchFieldChanged = useCallback(
+    (name, value) => {
+      const newParams = { ...query_params, [name]: value || undefined };
+      router.get(route("admin.users.index"), newParams);
+    },
+    [query_params]
+  );
 
-  const onKeyPress = (name, e) => {
-    if (e.key !== "Enter") return;
-
-    searchFieldChanged(name, e.target.value);
-  };
-
-  const sortChanged = (name) => {
-    if (name === query_params.order_by) {
-      if (query_params.order === "asc") {
-        query_params.order = "desc";
+  const sortChanged = useCallback(
+    (name) => {
+      const newParams = { ...query_params };
+      if (name === newParams.order_by) {
+        newParams.order = newParams.order === "asc" ? "desc" : "asc";
       } else {
-        query_params.order = "asc";
+        newParams.order_by = name;
+        newParams.order = "asc";
       }
-    } else {
-      query_params.order_by = name;
-      query_params.order = "asc";
-    }
-    router.get(route("admin.users.index"), query_params);
-  };
+      router.get(route("admin.users.index"), newParams);
+    },
+    [query_params]
+  );
+
+  const onKeyPress = useCallback(
+    (name, e) => {
+      if (e.key === "Enter") {
+        searchFieldChanged(name, e.target.value);
+      }
+    },
+    [searchFieldChanged]
+  );
+
+  const tableHeaders = useMemo(
+    () => (
+      <tr className="text-nowrap">
+        <TableHeading
+          name="id"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          ID
+        </TableHeading>
+        <TableHeading
+          name="name"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Name
+        </TableHeading>
+        <TableHeading
+          name="email"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Email
+        </TableHeading>
+        <TableHeading
+          name="created_at"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Create Date
+        </TableHeading>
+        <TableHeading
+          name="updated_at"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Update Date
+        </TableHeading>
+        <th className="px-3 py-3 text-left">Actions</th>
+      </tr>
+    ),
+    [query_params.order_by, query_params.order, sortChanged]
+  );
 
   return (
     <AuthenticatedLayout
@@ -82,49 +128,7 @@ export default function UsersIndex({
                 <div className="overflow-auto">
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                      <tr className="text-nowrap">
-                        <TableHeading
-                          name="id"
-                          sort_field={query_params.order_by}
-                          sort_direction={query_params.order}
-                          sortChanged={sortChanged}
-                        >
-                          ID
-                        </TableHeading>
-                        <TableHeading
-                          name="name"
-                          sort_field={query_params.order_by}
-                          sort_direction={query_params.order}
-                          sortChanged={sortChanged}
-                        >
-                          Name
-                        </TableHeading>
-                        <TableHeading
-                          name="email"
-                          sort_field={query_params.order_by}
-                          sort_direction={query_params.order}
-                          sortChanged={sortChanged}
-                        >
-                          Email
-                        </TableHeading>
-                        <TableHeading
-                          name="created_at"
-                          sort_field={query_params.order_by}
-                          sort_direction={query_params.order}
-                          sortChanged={sortChanged}
-                        >
-                          Create Date
-                        </TableHeading>
-                        <TableHeading
-                          name="updated_at"
-                          sort_field={query_params.order_by}
-                          sort_direction={query_params.order}
-                          sortChanged={sortChanged}
-                        >
-                          Update Date
-                        </TableHeading>
-                        <th className="px-3 py-3 text-left">Actions</th>
-                      </tr>
+                      {tableHeaders}
                     </thead>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                       <tr className="text-nowrap">
@@ -181,7 +185,7 @@ export default function UsersIndex({
                     </tbody>
                   </table>
                 </div>
-                <Pagination class="mt-6" links={users.meta.links} />
+                <Pagination className="mt-6" links={users.meta.links} />
               </div>
             </div>
           </div>

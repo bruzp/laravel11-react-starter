@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import { useCallback } from "react";
 
 export default function QuestionnaireCreate({ auth }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -12,19 +13,25 @@ export default function QuestionnaireCreate({ auth }) {
     description: "",
   });
 
-  function handleOnChange(event) {
-    setData(
-      event.target.name,
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value
-    );
-  }
+  const handleOnChange = useCallback(
+    (event) => {
+      setData(
+        event.target.name,
+        event.target.type === "checkbox"
+          ? event.target.checked
+          : event.target.value
+      );
+    },
+    [setData]
+  );
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    post(route("admin.questionnaires.store"));
-  }
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      post(route("admin.questionnaires.store"));
+    },
+    [post]
+  );
 
   return (
     <AuthenticatedLayout

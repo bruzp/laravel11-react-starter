@@ -4,6 +4,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import { useCallback } from "react";
 
 export default function UsersCreate({ auth }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,19 +14,25 @@ export default function UsersCreate({ auth }) {
     password_confirmation: "",
   });
 
-  function handleOnChange(event) {
-    setData(
-      event.target.name,
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value
-    );
-  }
+  const handleOnChange = useCallback(
+    (event) => {
+      setData(
+        event.target.name,
+        event.target.type === "checkbox"
+          ? event.target.checked
+          : event.target.value
+      );
+    },
+    [setData]
+  );
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    post(route("admin.users.store"));
-  }
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      post(route("admin.users.store"));
+    },
+    [post]
+  );
 
   return (
     <AuthenticatedLayout

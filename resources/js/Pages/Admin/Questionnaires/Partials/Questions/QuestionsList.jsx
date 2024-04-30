@@ -4,6 +4,7 @@ import TextInput from "@/Components/TextInput";
 import { Link, router } from "@inertiajs/react";
 import QuestionsCreate from "./QuestionsCreate";
 import QuestionsEdit from "./QuestionsEdit";
+import { useCallback, useMemo } from "react";
 
 export default function QuestionsList({
   className = "",
@@ -16,76 +17,62 @@ export default function QuestionsList({
     order_by: "priority",
   });
 
-  const [filtered_questions, setFilteredQuestions] = useState([]);
   const [search, setSearch] = useState("");
 
+  /* Debounce */
   useEffect(() => {
-    filterList();
-  }, [sort, search, questions]);
+    const handler = setTimeout(() => {
+      setSearch(search.trim());
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [search]);
 
-  const filterList = () => {
-    const questions_copy = [...questions];
-    const search_results = searchList(questions_copy);
-    const sorted_results = sortList(search_results);
-
-    setFilteredQuestions(sorted_results);
-  };
-
-  const searchList = (items) => {
-    return items.filter((item) =>
+  /* Immutability Principle (questions) */
+  const filtered_questions = useMemo(() => {
+    const filtered = questions.filter((item) =>
       item.question.toLowerCase().includes(search.toLowerCase())
     );
-  };
-
-  const sortList = (items) => {
-    return items.sort((a, b) => {
+    return filtered.sort((a, b) => {
+      const isAscending = sort.order === "asc";
       switch (sort.order_by) {
         case "question":
-          const nameA = a[sort.order_by].toUpperCase();
-          const nameB = b[sort.order_by].toUpperCase();
-
-          let comparison = 0;
-
-          if (nameA < nameB) {
-            comparison = -1;
-          }
-          if (nameA > nameB) {
-            comparison = 1;
-          }
-
-          return sort.order === "desc" ? comparison * -1 : comparison;
+          return isAscending
+            ? a.question.localeCompare(b.question)
+            : b.question.localeCompare(a.question);
         case "created_at":
         case "updated_at":
-          if (sort.order === "asc") {
-            return new Date(b[sort.order_by]) - new Date(a[sort.order_by]);
-          } else {
-            return new Date(a[sort.order_by]) - new Date(b[sort.order_by]);
-          }
+          return isAscending
+            ? new Date(a[sort.order_by]) - new Date(b[sort.order_by])
+            : new Date(b[sort.order_by]) - new Date(a[sort.order_by]);
         default:
-          if (sort.order === "asc") {
-            return a[sort.order_by] - b[sort.order_by];
-          } else {
-            return b[sort.order_by] - a[sort.order_by];
-          }
+          return isAscending
+            ? a[sort.order_by] - b[sort.order_by]
+            : b[sort.order_by] - a[sort.order_by];
       }
     });
-  };
+  }, [questions, search, sort]);
 
-  const onKeyPress = (e) => {
-    if (e.key !== "Enter") return;
+  const onKeyPress = useCallback(
+    (e) => {
+      if (e.key !== "Enter") return;
 
-    setSearch(e.target.value);
-  };
+      setSearch(e.target.value);
+    },
+    [search]
+  );
 
-  const sortChanged = (name) => {
-    if (name === sort.order_by) {
-      setSort({ ...sort, order: sort.order === "asc" ? "desc" : "asc" });
-    } else {
-      setSort({ order_by: name, order: "asc" });
-    }
-  };
+  const sortChanged = useCallback(
+    (name) => {
+      if (name === sort.order_by) {
+        setSort({ ...sort, order: sort.order === "asc" ? "desc" : "asc" });
+      } else {
+        setSort({ order_by: name, order: "asc" });
+      }
+    },
+    [sort]
+  );
 
-  const destroy = (id, question) => {
+  const destroy = useCallback((id, question) => {
     router.delete(route("admin.questions.destroy", id), {
       preserveScroll: true,
       onBefore: () =>
@@ -93,7 +80,53 @@ export default function QuestionsList({
           "Are you sure you want to delete this question {" + question + "}?"
         ),
     });
-  };
+  }, []);
+
+  const tableHeaders = useMemo(() => (
+    <tr className="text-nowrap">
+      <TableHeading
+        name="id"
+        sort_field={sort.order_by}
+        sort_direction={sort.order}
+        sortChanged={sortChanged}
+      >
+        ID
+      </TableHeading>
+      <TableHeading
+        name="question"
+        sort_field={sort.order_by}
+        sort_direction={sort.order}
+        sortChanged={sortChanged}
+      >
+        Question
+      </TableHeading>
+      <TableHeading
+        name="priority"
+        sort_field={sort.order_by}
+        sort_direction={sort.order}
+        sortChanged={sortChanged}
+      >
+        Priority
+      </TableHeading>
+      <TableHeading
+        name="created_at"
+        sort_field={sort.order_by}
+        sort_direction={sort.order}
+        sortChanged={sortChanged}
+      >
+        Create Date
+      </TableHeading>
+      <TableHeading
+        name="updated_at"
+        sort_field={sort.order_by}
+        sort_direction={sort.order}
+        sortChanged={sortChanged}
+      >
+        Update Date
+      </TableHeading>
+      <th className="px-3 py-3 text-left">Actions</th>
+    </tr>
+  ));
 
   return (
     <section className={className}>
@@ -127,49 +160,7 @@ export default function QuestionsList({
         )}
         <table className="w-full text-sm text-left rtl:text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-            <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={sort.order_by}
-                sort_direction={sort.order}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
-              <TableHeading
-                name="question"
-                sort_field={sort.order_by}
-                sort_direction={sort.order}
-                sortChanged={sortChanged}
-              >
-                Question
-              </TableHeading>
-              <TableHeading
-                name="priority"
-                sort_field={sort.order_by}
-                sort_direction={sort.order}
-                sortChanged={sortChanged}
-              >
-                Priority
-              </TableHeading>
-              <TableHeading
-                name="created_at"
-                sort_field={sort.order_by}
-                sort_direction={sort.order}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-              <TableHeading
-                name="updated_at"
-                sort_field={sort.order_by}
-                sort_direction={sort.order}
-                sortChanged={sortChanged}
-              >
-                Update Date
-              </TableHeading>
-              <th className="px-3 py-3 text-left">Actions</th>
-            </tr>
+            {tableHeaders}
           </thead>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">

@@ -1,24 +1,31 @@
 import FrontendLayout from "@/Layouts/Frontend/Layout";
 import { Head, useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { useCallback } from "react";
 
 export default function TakeExam({ auth, questionnaire, questions, status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     answers: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    post(route("check-exam", questionnaire));
-  };
+      post(route("check-exam", questionnaire));
+    },
+    [post, questionnaire]
+  );
 
-  const handleChange = (questionId, value) => {
-    setData("answers", {
-      ...data.answers,
-      [questionId]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (questionId, value) => {
+      setData("answers", {
+        ...data.answers,
+        [questionId]: value,
+      });
+    },
+    [setData]
+  );
 
   return (
     <FrontendLayout user={auth.user}>

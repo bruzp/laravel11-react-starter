@@ -4,6 +4,8 @@ import Pagination from "@/Components/Pagination";
 import { format } from "date-fns";
 import TextInput from "@/Components/Frontend/TextInput";
 import TableHeading from "@/Components/TableHeading";
+import { useCallback } from "react";
+import { useMemo } from "react";
 
 export default function Exam({
   auth,
@@ -13,39 +15,73 @@ export default function Exam({
 }) {
   query_params = query_params || {};
 
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      query_params[name] = value;
-    } else {
-      delete query_params[name];
-    }
+  /* Immutability Principle */
+  const searchFieldChanged = useCallback(
+    (name, value) => {
+      const newParams = { ...query_params, [name]: value || undefined };
+      router.get(route("exams"), newParams);
+    },
+    [query_params]
+  );
 
-    router.get(route("exams"), query_params);
-  };
-
-  const onKeyPress = (name, e) => {
-    if (e.key !== "Enter") return;
-
-    searchFieldChanged(name, e.target.value);
-  };
-
-  const sortChanged = (name) => {
-    if (name === query_params.order_by) {
-      if (query_params.order === "asc") {
-        query_params.order = "desc";
+  const sortChanged = useCallback(
+    (name) => {
+      const newParams = { ...query_params };
+      if (name === newParams.order_by) {
+        newParams.order = newParams.order === "asc" ? "desc" : "asc";
       } else {
-        query_params.order = "asc";
+        newParams.order_by = name;
+        newParams.order = "asc";
       }
-    } else {
-      query_params.order_by = name;
-      query_params.order = "asc";
-    }
-    router.get(route("exams"), query_params);
-  };
+      router.get(route("exams"), newParams);
+    },
+    [query_params]
+  );
 
-  const limitString = (str, max_length) => {
+  const onKeyPress = useCallback(
+    (name, e) => {
+      if (e.key !== "Enter") return;
+
+      searchFieldChanged(name, e.target.value);
+    },
+    [searchFieldChanged]
+  );
+
+  const limitString = useCallback((str, max_length) => {
     return str.length > max_length ? str.slice(0, max_length) + "..." : str;
-  };
+  }, []);
+
+  const tableHeaders = useMemo(
+    () => (
+      <tr className="text-nowrap">
+        <TableHeading
+          name="title"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Title
+        </TableHeading>
+        <TableHeading
+          name="description"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Description
+        </TableHeading>
+        <TableHeading
+          name="updated_at"
+          sort_field={query_params.order_by}
+          sort_direction={query_params.order}
+          sortChanged={sortChanged}
+        >
+          Update Date
+        </TableHeading>
+      </tr>
+    ),
+    [query_params.order_by, query_params.order, sortChanged]
+  );
 
   return (
     <FrontendLayout user={auth.user}>
@@ -59,34 +95,7 @@ export default function Exam({
             </h2>
 
             <table className="w-full text-left rtl:text-right">
-              <thead className="text-xs uppercase">
-                <tr className="text-nowrap">
-                  <TableHeading
-                    name="title"
-                    sort_field={query_params.order_by}
-                    sort_direction={query_params.order}
-                    sortChanged={sortChanged}
-                  >
-                    Title
-                  </TableHeading>
-                  <TableHeading
-                    name="description"
-                    sort_field={query_params.order_by}
-                    sort_direction={query_params.order}
-                    sortChanged={sortChanged}
-                  >
-                    Description
-                  </TableHeading>
-                  <TableHeading
-                    name="updated_at"
-                    sort_field={query_params.order_by}
-                    sort_direction={query_params.order}
-                    sortChanged={sortChanged}
-                  >
-                    Update Date
-                  </TableHeading>
-                </tr>
-              </thead>
+              <thead className="text-xs uppercase">{tableHeaders}</thead>
               <thead className="text-xs uppercase">
                 <tr className="text-nowrap">
                   <th className="px-3 py-3"></th>

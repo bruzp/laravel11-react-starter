@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { useState, useEffect } from "react";
+import { useCallback } from "react";
 
 export default function UsersEdit({ auth, user, status }) {
   const { data, setData, put, processing, errors, reset } = useForm({
@@ -23,23 +24,29 @@ export default function UsersEdit({ auth, user, status }) {
 
   const [name, setName] = useState(user.name);
 
-  function handleOnChange(event) {
-    setData(
-      event.target.name,
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value
-    );
+  const handleOnChange = useCallback(
+    (event) => {
+      setData(
+        event.target.name,
+        event.target.type === "checkbox"
+          ? event.target.checked
+          : event.target.value
+      );
 
-    if (event.target.name == "name") {
-      setName(event.target.value);
-    }
-  }
+      if (event.target.name == "name") {
+        setName(event.target.value);
+      }
+    },
+    [setData]
+  );
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    put(route("admin.users.update", user));
-  }
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      put(route("admin.users.update", user));
+    },
+    [put, user]
+  );
 
   return (
     <AuthenticatedLayout

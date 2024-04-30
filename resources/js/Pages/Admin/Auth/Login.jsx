@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
+import { useCallback } from "react";
 
 export default function Login({ status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -18,11 +19,14 @@ export default function Login({ status }) {
     };
   }, []);
 
-  const submit = (e) => {
-    e.preventDefault();
+  const submit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    post(route("admin.login"));
-  };
+      post(route("admin.login"));
+    },
+    [post]
+  );
 
   return (
     <GuestLayout>

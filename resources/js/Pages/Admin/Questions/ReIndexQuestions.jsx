@@ -3,6 +3,7 @@ import { Head, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { useCallback } from "react";
 
 export default function ReIndexQuestions({
   auth,
@@ -21,19 +22,22 @@ export default function ReIndexQuestions({
     prepareData();
   }, [_questions]);
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
+  const handleDragEnd = useCallback(
+    (result) => {
+      if (!result.destination) return;
 
-    const items = Array.from(_questions);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+      const items = Array.from(_questions);
+      const [reorderedItem] = items.splice(result.source.index, 1);
+      items.splice(result.destination.index, 0, reorderedItem);
 
-    setQuestions(items);
-  };
+      setQuestions(items);
+    },
+    [_questions]
+  );
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     put(route("admin.questionnaires.update.priority", questionnaire));
-  };
+  }, [put, questionnaire]);
 
   const prepareData = () => {
     const newData = _questions.map((obj, index) => ({
