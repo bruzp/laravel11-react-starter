@@ -6,14 +6,19 @@ use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Question\QuestionRepositoryInterface;
 
 class QuestionRepository implements QuestionRepositoryInterface
 {
-    public function getQuestions(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
+    use SetRelationsTrait;
+
+    public function getQuestions(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = Question::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getQuestionsQuerySelect($query, $conditions);
 
@@ -26,18 +31,24 @@ class QuestionRepository implements QuestionRepositoryInterface
             : $query->get();
     }
 
-    public function findQuestion(array $conditions): ?Question
+    public function findQuestion(array $conditions, array $relations = []): ?Question
     {
         $query = Question::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getQuestionsQueryFilters($query, $conditions);
 
         return $query->first();
     }
 
-    public function findQuestionById(int $id): ?Question
+    public function findQuestionById(int $id, array $relations = []): ?Question
     {
-        return Question::find($id);
+        $query = Question::query();
+
+        $this->setRelations($query, $relations);
+
+        return $query->find($id);
     }
 
     public function storeQuestion(array $data): Question

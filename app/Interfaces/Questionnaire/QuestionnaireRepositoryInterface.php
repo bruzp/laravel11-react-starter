@@ -8,11 +8,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface QuestionnaireRepositoryInterface
 {
-    public function getQuestionnaires(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator;
+    public function getQuestionnaires(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator;
 
-    public function findQuestionnaire(array $conditions): ?Questionnaire;
+    public function findQuestionnaire(array $conditions, array $relations = []): ?Questionnaire;
 
-    public function findQuestionnaireById(int $id): ?Questionnaire;
+    public function findQuestionnaireById(int $id, array $relations = []): ?Questionnaire;
 
     public function storeQuestionnaire(array $data): Questionnaire;
 

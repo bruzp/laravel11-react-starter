@@ -5,14 +5,19 @@ namespace App\Repositories;
 use App\Models\UserAnswerRanking;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\UserAnswerRanking\UserAnswerRankingRepositoryInterface;
 
 class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterface
 {
-    public function getUserAnswerRankings(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
+    use SetRelationsTrait;
+
+    public function getUserAnswerRankings(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = UserAnswerRanking::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getUserAnswerRankingsQuerySelect($query, $conditions);
 
@@ -29,18 +34,24 @@ class UserAnswerRankingRepository implements UserAnswerRankingRepositoryInterfac
             : $query->get();
     }
 
-    public function findUserAnswerRanking(array $conditions): ?UserAnswerRanking
+    public function findUserAnswerRanking(array $conditions, array $relations = []): ?UserAnswerRanking
     {
         $query = UserAnswerRanking::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getUserAnswerRankingsQueryFilters($query, $conditions);
 
         return $query->first();
     }
 
-    public function findUserAnswerRankingByUserId(int $user_id): ?UserAnswerRanking
+    public function findUserAnswerRankingByUserId(int $user_id, array $relations = []): ?UserAnswerRanking
     {
-        return UserAnswerRanking::query()
+        $query = UserAnswerRanking::query();
+
+        $this->setRelations($query, $relations);
+
+        return $query
             ->where('user_id', $user_id)
             ->first();
     }

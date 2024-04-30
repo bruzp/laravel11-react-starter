@@ -5,14 +5,19 @@ namespace App\Repositories;
 use App\Models\Questionnaire;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Questionnaire\QuestionnaireRepositoryInterface;
 
 class QuestionnaireRepository implements QuestionnaireRepositoryInterface
 {
-    public function getQuestionnaires(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
+    use SetRelationsTrait;
+
+    public function getQuestionnaires(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = Questionnaire::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getQuestionnairesQuerySelect($query, $conditions);
 
@@ -25,18 +30,24 @@ class QuestionnaireRepository implements QuestionnaireRepositoryInterface
             : $query->get();
     }
 
-    public function findQuestionnaire(array $conditions): ?Questionnaire
+    public function findQuestionnaire(array $conditions, array $relations = []): ?Questionnaire
     {
         $query = Questionnaire::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getQuestionnairesQueryFilters($query, $conditions);
 
         return $query->first();
     }
 
-    public function findQuestionnaireById(int $id): ?Questionnaire
+    public function findQuestionnaireById(int $id, array $relations = []): ?Questionnaire
     {
-        return Questionnaire::find($id);
+        $query = Questionnaire::query();
+
+        $this->setRelations($query, $relations);
+
+        return $query->find($id);
     }
 
     public function storeQuestionnaire(array $data): Questionnaire

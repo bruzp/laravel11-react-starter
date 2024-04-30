@@ -5,16 +5,21 @@ namespace App\Repositories;
 use App\Models\Answer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use App\Traits\Repositories\SetRelationsTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Answer\AnswerRepositoryInterface;
 
 class AnswerRepository implements AnswerRepositoryInterface
 {
-    public function getAnswers(array $conditions = [], int $paginate = 0): Collection|LengthAwarePaginator
+    use SetRelationsTrait;
+
+    public function getAnswers(array $conditions = [], int $paginate = 0, array $relations = []): Collection|LengthAwarePaginator
     {
         $query = Answer::query()
             ->join('questionnaires', 'questionnaires.id', '=', 'answers.questionnaire_id')
             ->join('users', 'users.id', '=', 'answers.user_id');
+
+        $this->setRelations($query, $relations);
 
         $this->getAnswersQuerySelect($query, $conditions);
 
@@ -31,18 +36,24 @@ class AnswerRepository implements AnswerRepositoryInterface
             : $query->get();
     }
 
-    public function findAnswer(array $conditions): ?Answer
+    public function findAnswer(array $conditions, array $relations = []): ?Answer
     {
         $query = Answer::query();
+
+        $this->setRelations($query, $relations);
 
         $this->getAnswersQueryFilters($query, $conditions);
 
         return $query->first();
     }
 
-    public function findAnswerById(int $id): ?Answer
+    public function findAnswerById(int $id, array $relations = []): ?Answer
     {
-        return Answer::find($id);
+        $query = Answer::query();
+
+        $this->setRelations($query, $relations);
+
+        return $query->find($id);
     }
 
     public function storeAnswer(array $data): Answer
