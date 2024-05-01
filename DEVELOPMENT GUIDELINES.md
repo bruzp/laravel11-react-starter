@@ -72,6 +72,20 @@
    - Maintain 2 spaces for indentation.
 3. **Component-Based Development**:
    - Emphasize readability and brevity through component-based development.
+4. **Frontend Folder Structure**
+
+- **Users**
+  - create.blade.php
+  - edit.blade.php
+  - index.blade.php
+
+5. **Frontend Folder Structure**
+
+- **Users**
+  - **Create**
+    - index.blade.php
+    - confirm.blade.php
+    - complete.blade.php
 
 ## Testing
 
