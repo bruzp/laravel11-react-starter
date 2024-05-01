@@ -6,11 +6,7 @@ import TextInput from "@/Components/TextInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import { useCallback } from "react";
 
-export default function QuestionnaireEditForm({
-  className = "",
-  questionnaire,
-  status,
-}) {
+export default function EditForm({ className = "", questionnaire, status }) {
   const { data, setData, put, processing, errors } = useForm({
     title: questionnaire.title,
     description: questionnaire.description,

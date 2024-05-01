@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import QuestionsIndex from "./Partials/Questions/Index";
-import QuestionnaireEditForm from "./Partials/QuestionnaireEditForm";
+import EditForm from "./Partials/EditForm";
 
 export default function QuestionnaireEdit({
   auth,
@@ -24,7 +24,7 @@ export default function QuestionnaireEdit({
       <div className="py-12">
         <div className="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-            <QuestionnaireEditForm
+            <EditForm
               className="max-w-full"
               questionnaire={questionnaire}
               status={status}
