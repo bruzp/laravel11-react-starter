@@ -11,7 +11,7 @@ import SelectInput from "@/Components/SelectInput";
 import { useEffect } from "react";
 import { useCallback } from "react";
 
-export default function QuestionsCreate({ className = "", question }) {
+export default function QuestionsEdit({ className = "", question }) {
   const [showModal, setShowModal] = useState(false);
   const [optionData, setOptionData] = useState([]);
   const [htmlOptions, setHtmlOptions] = useState([]);

@@ -2,8 +2,8 @@ import TableHeading from "@/Components/TableHeading";
 import React, { useState, useEffect } from "react";
 import TextInput from "@/Components/TextInput";
 import { Link, router } from "@inertiajs/react";
-import QuestionsCreate from "./QuestionsCreate";
-import QuestionsEdit from "./QuestionsEdit";
+import QuestionsCreate from "./Create";
+import QuestionsEdit from "./Edit";
 import { useCallback, useMemo } from "react";
 
 export default function QuestionsList({

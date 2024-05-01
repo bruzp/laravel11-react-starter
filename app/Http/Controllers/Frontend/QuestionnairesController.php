@@ -57,7 +57,7 @@ class QuestionnairesController extends Controller
         ]);
         $questions_resource = QuestionResource::collection($questions);
 
-        return Inertia::render('Frontend/Questionnaires/Create/CreateIndex', [
+        return Inertia::render('Frontend/Questionnaires/Create/Index', [
             'questionnaire' => $questionnaire_resource,
             'questions' => $questions_resource,
             'status' => session('status'),
@@ -86,7 +86,7 @@ class QuestionnairesController extends Controller
             return redirect()->route('exams');
         }
 
-        return Inertia::render('Frontend/Questionnaires/Create/CreateComplete', [
+        return Inertia::render('Frontend/Questionnaires/Create/Complete', [
             'status' => session('status'),
         ]);
     }

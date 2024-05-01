@@ -1,7 +1,7 @@
 import FrontendLayout from "@/Layouts/Frontend/Layout";
 import { Head } from "@inertiajs/react";
 
-export default function TakeExam({ auth, status }) {
+export default function TakeExamComplete({ auth, status }) {
   return (
     <FrontendLayout user={auth.user}>
       <Head title="Exam Result" />

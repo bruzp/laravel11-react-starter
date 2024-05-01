@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import QuestionsList from "./Partials/Questions/QuestionsList";
+import QuestionsIndex from "./Partials/Questions/Index";
 import QuestionnaireEditForm from "./Partials/QuestionnaireEditForm";
 
 export default function QuestionnaireEdit({
@@ -32,7 +32,7 @@ export default function QuestionnaireEdit({
           </div>
 
           <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-            <QuestionsList
+            <QuestionsIndex
               className="max-w-full"
               questionnaire={questionnaire}
               questions={questions}
