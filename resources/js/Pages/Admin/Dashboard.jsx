@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/Admin/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export default function Dashboard({ auth, top10_users }) {
   return (
@@ -20,10 +20,15 @@ export default function Dashboard({ auth, top10_users }) {
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="space-y-4">
                 {top10_users.map((user) => (
-                  <div className="card bg-dark shadow-md rounded p-4">
+                  <div
+                    className="card bg-dark shadow-md rounded p-4"
+                    key={user.id}
+                  >
                     <h2 className="font-bold text-lg">{user.name}</h2>
                     <p>{user.result}%</p>
-                    <p className="text-sm text-gray-500">{format(user.created_at, 'yyyy-mm-dd')}</p>
+                    <p className="text-sm text-gray-500">
+                      {format(user.created_at, "yyyy-mm-dd")}
+                    </p>
                   </div>
                 ))}
               </div>
