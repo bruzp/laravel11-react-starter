@@ -9,6 +9,7 @@ import EditButton from "@/Components/EditButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SelectInput from "@/Components/SelectInput";
 import { useEffect } from "react";
+import { useCallback } from "react";
 
 export default function QuestionsCreate({ className = "", question }) {
   const [showModal, setShowModal] = useState(false);
@@ -25,64 +26,70 @@ export default function QuestionsCreate({ className = "", question }) {
     setData("choices", Object.values(optionData));
   }, [optionData]);
 
-  const editQuestionModal = (e) => {
-    e.preventDefault();
+  const editQuestionModal = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    question.choices.map((choice, index) => {
-      const id = Date.now();
-      const key = "option_" + id + index;
+      question.choices.map((choice, index) => {
+        const id = Date.now();
+        const key = "option_" + id + index;
 
-      setOptionData((prevOptionData) => ({
-        ...prevOptionData,
-        [key]: choice,
-      }));
+        setOptionData((prevOptionData) => ({
+          ...prevOptionData,
+          [key]: choice,
+        }));
 
-      const newOption = (
-        <div key={key} className="mt-6">
-          <div className="flex">
-            <input
-              id={key}
-              name={key}
-              placeholder="Add option"
-              defaultValue={choice}
-              type="text"
-              className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-11/12 mr-2 border px-4 py-2"
-              onChange={(e) => handleOnChangeOption(e, key)}
-            />
-            <button
-              type="button"
-              className="mt-1 inline-flex items-center px-3 py-1.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-1/12"
-              onClick={() => handleRemoveOption(key)}
-            >
-              Remove
-            </button>
+        const newOption = (
+          <div key={key} className="mt-6">
+            <div className="flex">
+              <input
+                id={key}
+                name={key}
+                placeholder="Add option"
+                defaultValue={choice}
+                type="text"
+                className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-11/12 mr-2 border px-4 py-2"
+                onChange={(e) => handleOnChangeOption(e, key)}
+              />
+              <button
+                type="button"
+                className="mt-1 inline-flex items-center px-3 py-1.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-1/12"
+                onClick={() => handleRemoveOption(key)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
-        </div>
-      );
+        );
 
-      setHtmlOptions((prevOptions) => [...prevOptions, newOption]);
-    });
+        setHtmlOptions((prevOptions) => [...prevOptions, newOption]);
+      });
 
-    setData({
-      question: question.question,
-      answer: question.answer,
-    });
+      setData({
+        question: question.question,
+        answer: question.answer,
+      });
 
-    setShowModal(true);
-  };
+      setShowModal(true);
+    },
+    [setData, question]
+  );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    const question_id = question.id;
+      const question_id = question.id;
 
-    put(route("admin.questions.update", question_id), {
-      preserveScroll: true,
-      onSuccess: () => closeModal(),
-    });
-  };
+      put(route("admin.questions.update", question_id), {
+        preserveScroll: true,
+        onSuccess: () => closeModal(),
+      });
+    },
+    [put]
+  );
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
 
     setOptionData([]);
@@ -90,17 +97,17 @@ export default function QuestionsCreate({ className = "", question }) {
     setHtmlOptions([]);
 
     reset();
-  };
+  }, [reset]);
 
-  const handleOnChangeOption = (e, key) => {
+  const handleOnChangeOption = useCallback((e, key) => {
     const { name, value } = e.target;
     setOptionData((prevOptionData) => ({
       ...prevOptionData,
       [key]: value,
     }));
-  };
+  }, []);
 
-  const handleRemoveOption = (key) => {
+  const handleRemoveOption = useCallback((key) => {
     setOptionData((prevOptionData) => {
       const newOptionData = { ...prevOptionData };
 
@@ -121,9 +128,9 @@ export default function QuestionsCreate({ className = "", question }) {
       ...prevData,
       answer: "",
     }));
-  };
+  }, []);
 
-  const handleAddOptions = () => {
+  const handleAddOptions = useCallback(() => {
     const id = Date.now();
     const key = "option_" + id;
 
@@ -155,7 +162,7 @@ export default function QuestionsCreate({ className = "", question }) {
     );
 
     setHtmlOptions((prevOptions) => [...prevOptions, newOption]);
-  };
+  }, [optionData, htmlOptions]);
 
   return (
     <section className={`space-y-6 ${className}`}>

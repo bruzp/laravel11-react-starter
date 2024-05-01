@@ -35,7 +35,7 @@ export default function Login({ status, canResetPassword }) {
       )}
 
       <form onSubmit={submit}>
-        <h1 class="block font-medium text-lg text-gray-700 dark:text-gray-300 mb-4">
+        <h1 className="block font-medium text-lg text-gray-700 dark:text-gray-300 mb-4">
           User Login
         </h1>
 

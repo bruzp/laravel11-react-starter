@@ -9,6 +9,7 @@ import SuccessButton from "@/Components/SuccessButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SelectInput from "@/Components/SelectInput";
 import { useEffect } from "react";
+import { useCallback } from "react";
 
 export default function QuestionsCreate({ className = "", questionnaire }) {
   const [showModal, setShowModal] = useState(false);
@@ -25,20 +26,23 @@ export default function QuestionsCreate({ className = "", questionnaire }) {
     setData("choices", Object.values(optionData));
   }, [optionData]);
 
-  const addNew = () => {
+  const addNew = useCallback(() => {
     setShowModal(true);
-  };
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    post(route("admin.questions.store", questionnaire), {
-      preserveScroll: true,
-      onSuccess: () => closeModal(),
-    });
-  };
+      post(route("admin.questions.store", questionnaire), {
+        preserveScroll: true,
+        onSuccess: () => closeModal(),
+      });
+    },
+    [post, questionnaire]
+  );
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
 
     setOptionData([]);
@@ -46,35 +50,38 @@ export default function QuestionsCreate({ className = "", questionnaire }) {
     setHtmlOptions([]);
 
     reset();
-  };
+  }, [reset]);
 
-  const handleOnChangeOption = (e, key) => {
+  const handleOnChangeOption = useCallback((e, key) => {
     const { name, value } = e.target;
     setOptionData((prevOptionData) => ({
       ...prevOptionData,
       [key]: value,
     }));
-  };
+  }, []);
 
-  const handleRemoveOption = (key) => {
-    setOptionData((prevOptionData) => {
-      const newOptionData = { ...prevOptionData };
+  const handleRemoveOption = useCallback(
+    (key) => {
+      setOptionData((prevOptionData) => {
+        const newOptionData = { ...prevOptionData };
 
-      delete newOptionData[key];
+        delete newOptionData[key];
 
-      return newOptionData;
-    });
+        return newOptionData;
+      });
 
-    setHtmlOptions((prevHtmlOptions) => {
-      const newHtmlOptions = prevHtmlOptions.filter(
-        (option) => option.key !== key
-      );
+      setHtmlOptions((prevHtmlOptions) => {
+        const newHtmlOptions = prevHtmlOptions.filter(
+          (option) => option.key !== key
+        );
 
-      return newHtmlOptions;
-    });
-  };
+        return newHtmlOptions;
+      });
+    },
+    [setOptionData, setHtmlOptions]
+  );
 
-  const handleAddOptions = () => {
+  const handleAddOptions = useCallback(() => {
     const id = Date.now();
     const key = "option_" + id;
 
@@ -106,7 +113,7 @@ export default function QuestionsCreate({ className = "", questionnaire }) {
     );
 
     setHtmlOptions((prevOptions) => [...prevOptions, newOption]);
-  };
+  }, [optionData, htmlOptions]);
 
   return (
     <section className={`space-y-6 ${className}`}>
