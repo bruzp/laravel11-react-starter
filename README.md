@@ -71,14 +71,18 @@ Follow these steps to get the application running on your local machine:
 ## Access Credentials
 
 - **Admin Access:**
+  - http://localhost/admin/login
   - Email: <admin@test.com>
   - Password: password
 
 - **User Access:**
+  - http://localhost/login
   - Email: Check the users table in your database for user credentials.
   - Password: password
 
 ## Testing Notes
+
+- **NOTE:** Please migrate and seed laravel11_react_starter_testing database first.
 
 - **Test all**
 
